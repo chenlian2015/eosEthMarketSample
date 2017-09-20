@@ -1,44 +1,24 @@
-# Tokens
-[ ![Codeship Status for ConsenSys/Tokens](https://app.codeship.com/projects/ccf33380-4dfa-0135-cfa1-72c4965f7f14/status?branch=master)](https://app.codeship.com/projects/233433)
+一.
+第一个初版已经基本研发出来，包括:
 
-This repo contains Solidity smart contract code to issue simple, standards-compliant tokens on Ethereum. It can be used to create any form of asset, currency, coin, hours, usage tokens, vunk, etc.  
+OCLotteryContract.sol//抽奖合约
 
-The default is [StandardToken.sol](https://github.com/ConsenSys/Tokens/blob/master/contracts/StandardToken.sol) which ONLY implements the core ERC20 standard functionality [#20](https://github.com/ethereum/EIPs/issues/20).  
+OCLPublicAddress.sol//欧链公共地址合约
 
-[HumanStandardToken.sol](https://github.com/ConsenSys/Tokens/blob/master/contracts/HumanStandardToken.sol) is an example of a token that has optional extras fit for your issuing your own tokens, to be mainly used by other humans. It includes:  
+OCMarket.sol//欧链市场合约
 
-1. Initial Finite Supply (upon creation one specifies how much is minted).  
-2. In the absence of a token registry: Optional Decimal, Symbol & Name.  
-3. Optional approveAndCall() functionality to notify a contract if an approval() has occurred.  
+OCMarketInterface.sol//市场接口合约(目前只提供了随机数chuli)
 
-There is a set of tests written for the HumanStandardToken.sol using the Truffle framework to do so.
+OCRandomContract.sol//随机数合约
 
-Standards allows other contract developers to easily incorporate your token into their application (governance, exchanges, games, etc). It will be updated as often as possible.  
+ThirdPartyVoter.sol//随机种子提供者合约
 
-## Testing
 
-```npm install```
+二.
+目前在testrpc+truffle+geth本地服务已经测试通过，可以正常抽奖(抽奖人参与数量以及参与一次的费用，随机种子数量以及提供一次正确种子被采纳的奖励。在代码中均可灵活配置)
 
-For getting truffle-hdwallet-provider. Solidity tests have to still be written.
+三.
+安全方面以及部分执行异常还没有考虑，防止账户eth丢失还需细化
 
-Uses Truffle 3.x.
-
-## ethpm
-
-This is published under tokens at ethpm.
-
-## Contributing
-
-**Pull requests are welcome! Please keep standards discussions to the EIP repos.**
-
-When submitting a pull request, please do so to the `staging` branch. 
-
-### Licensed under MIT.  
-
-This code is licensed under MIT.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+四.
+下一步添加一个web页面，让大家参与可视化抽奖，目前抽奖结果需要专业技术人员才能看懂……^_^
