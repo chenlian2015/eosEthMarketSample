@@ -43,9 +43,7 @@ contract OCLotteryContract is OCMarketInterface{
     }
 
     function() payable {
-        logs.push("step0");
         balance[msg.sender] += msg.value;
-        logs.push("step1");
         if (balance[msg.sender] >= oneTimeJoinFee) {
             joinOneLottery();
             balance[msg.sender] -= msg.value;
@@ -68,10 +66,7 @@ contract OCLotteryContract is OCMarketInterface{
         assert(currentIndex<oneGroupJoiners);
         lotteryJoiners[currentIndex] = msg.sender;
 
-        logs.push("outer");
         if(currentIndex >= (oneGroupJoiners-1)){
-
-            logs.push("enterb");
             bytes32 uuid = keccak256(lotteryJoiners);
             mapJoinersGroup[uuid].uuid = keccak256(lotteryJoiners);
 
@@ -80,14 +75,10 @@ contract OCLotteryContract is OCMarketInterface{
             }
 
             ocMarket = OCMarket(oclpa.getServerAddress("OCMarket"));
-            logs.push("enterc");
             ocMarket.requestOneUUID(uuid, this);
-            logs.push("enterd");
             currentIndex = 0;
-
         }
         else{
-            logs.push("entera");
             currentIndex++;
         }
     }
@@ -101,20 +92,8 @@ contract OCLotteryContract is OCMarketInterface{
         return logs.length;
     }
 
-    address callbackx;
-    function getLogAddress()public returns(address){
-        return callbackx;
-    }
-
-    function testAddress() public{
-        callbackx = address(this);
-    }
 
     function callBackForRequestRandom(bytes32 uuidRequest, bytes32 randomValue){
-        callbackx = address(this);
-
-        logs.push("callBackForRequestRandom_a");
-
         logs.push("callBackForRequestRandom_b");
         uint nIndexFirstPrize = uint(randomValue[0])%oneGroupJoiners;
         mapJoinersGroup[uuidRequest].prizerOne = mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize];

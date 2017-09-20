@@ -31,7 +31,6 @@ contract OCRandomContract{
         oneRequest.nHashGetedCount = 0;
         oneRequest.callBack = callBack;
         cacheRequests.push(oneRequest);
-        logs.push("requestOneUUID");
     }
 
     function OCRandomServer(){
@@ -43,22 +42,15 @@ contract OCRandomContract{
 
     function sendOnlyHash(bytes32 hash)public{
         logsaddress.push(msg.sender);
-        logs.push("enter_sendOnlyHash");
         assert(getCurrentNeedsCount()>0);
-        logs.push("enter_sendOnlyHasha");
-        //assert(cacheRequests[nCurrentIndex].nHashGetedCount<seedCountNeeded);
-        logs.push("enter_sendOnlyHashb");
-        //暂时先屏蔽，不然都没法测试了 assert(cacheRequests[nCurrentIndex].seedSender[msg.sender]!=1);//一个人，针对一个请求，只能投一次票
-        //cacheRequests[nCurrentIndex].seedSender[msg.sender] = 1;
 
-        logs.push("enter_sendOnlyHashc");
+        assert(cacheRequests[nCurrentIndex].seedSender[msg.sender]!=1);//一个人，针对一个请求，只能投一次票
+        cacheRequests[nCurrentIndex].seedSender[msg.sender] = 1;
 
         assert(cacheRequests[nCurrentIndex].hashSeed[hash]!=1);
         cacheRequests[nCurrentIndex].hashSeed[hash] = 1;
 
-        logs.push("enter_sendOnlyHashd");
         cacheRequests[nCurrentIndex].nHashGetedCount++;
-        logs.push("enter_sendOnlyHashe");
     }
 
     function testPayBack()public payable{
@@ -76,12 +68,11 @@ contract OCRandomContract{
         assert(hash==keccak256(seed));
         assert(cacheRequests[nCurrentIndex].hashSeed[hash] == 1);//表示没有初始化过
 
-         //balance[msg.sender] += payBackToSeedContribution;
+         balance[msg.sender] += payBackToSeedContribution;
 
          cacheRequests[nCurrentIndex].hashSeed[hash] = seed;
          cacheRequests[nCurrentIndex].seedIndex.push(hash);
          cacheRequests[nCurrentIndex].nSeedGetedCount++;
-        logs.push("enter_sendSeedAndHasha");
          if(cacheRequests[nCurrentIndex].nSeedGetedCount == seedCountNeeded){
              bytes memory strSeed;
              for(uint i=1; i<cacheRequests[nCurrentIndex].seedIndex.length; i++){
@@ -89,7 +80,6 @@ contract OCRandomContract{
                  strSeed = addBytes(cacheRequests[nCurrentIndex].hashSeed[keytmp], strSeed);
              }
              cacheRequests[nCurrentIndex].callBack.callBackForRequestRandom(cacheRequests[nCurrentIndex].uuid, keccak256(strSeed));
-             logs.push("enter_sendSeedAndHashk");
              nCurrentIndex++;
          }
     }
@@ -153,5 +143,4 @@ contract OCRandomContract{
     function logcurrentindex() public returns(uint){
         return nCurrentIndex;
     }
-
 }

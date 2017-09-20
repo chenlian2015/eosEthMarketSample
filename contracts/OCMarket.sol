@@ -19,7 +19,7 @@ contract OCMarket{
     }
 
     function requestOneUUID(bytes32 uuidFrom, OCMarketInterface callBack) payable {
-        //assert(balance[msg.sender]>=randomFee);
+        assert(balance[msg.sender]>=randomFee);
 
         balance[msg.sender]-=randomFee;
         logsaddress.push(msg.sender);
