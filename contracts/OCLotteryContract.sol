@@ -19,6 +19,8 @@ contract OCLotteryContract is OCMarketInterface{
     uint currentIndex;
     uint oneGroupJoiners;
 
+    uint randomFee;
+
     OCLPublicAddress oclpa;
     address[] lotteryJoiners;
 
@@ -36,6 +38,7 @@ contract OCLotteryContract is OCMarketInterface{
         oneGroupJoiners = 5;
         currentIndex = 0;
         lotteryJoiners = new address[](oneGroupJoiners);
+        randomFee = 0.1*1000000000000000000;//10^18次方;
         oclpa = OCLPublicAddress(0x002cacf5ee5d350d9c903435f6670650df97777e);
     }
 
@@ -52,12 +55,22 @@ contract OCLotteryContract is OCMarketInterface{
         }
     }
 
+    function getBalance()public returns(uint){
+        return balance[msg.sender];
+    }
+
+    function transferToMarket()public{
+        oclpa.getServerAddress("OCMarket").transfer(randomFee);
+    }
+
+
     function joinOneLottery() payable{
         assert(currentIndex<oneGroupJoiners);
         lotteryJoiners[currentIndex] = msg.sender;
 
         logs.push("outer");
         if(currentIndex >= (oneGroupJoiners-1)){
+
             logs.push("enterb");
             bytes32 uuid = keccak256(lotteryJoiners);
             mapJoinersGroup[uuid].uuid = keccak256(lotteryJoiners);
@@ -68,8 +81,6 @@ contract OCLotteryContract is OCMarketInterface{
 
             ocMarket = OCMarket(oclpa.getServerAddress("OCMarket"));
             logs.push("enterc");
-
-
             ocMarket.requestOneUUID(uuid, this);
             logs.push("enterd");
             currentIndex = 0;
@@ -90,10 +101,19 @@ contract OCLotteryContract is OCMarketInterface{
         return logs.length;
     }
 
+    address callbackx;
+    function getLogAddress()public returns(address){
+        return callbackx;
+    }
+
+    function testAddress() public{
+        callbackx = address(this);
+    }
 
     function callBackForRequestRandom(bytes32 uuidRequest, bytes32 randomValue){
+        callbackx = address(this);
+
         logs.push("callBackForRequestRandom_a");
-        assert(randomValue.length>=10);
 
         logs.push("callBackForRequestRandom_b");
         uint nIndexFirstPrize = uint(randomValue[0])%oneGroupJoiners;
@@ -101,12 +121,20 @@ contract OCLotteryContract is OCMarketInterface{
         logs.push("callBackForRequestRandom_c");
         if(nIndexFirstPrize <(oneGroupJoiners/2)){
             logs.push("callBackForRequestRandom_d");
+            if(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners.length>nIndexFirstPrize+2){
             mapJoinersGroup[uuidRequest].prizerTwo.push(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize+1]);
             mapJoinersGroup[uuidRequest].prizerTwo.push(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize+2]);
+            }else{
+                logs.push("callBackForRequestRandom_e");
+            }
         }else{
-            logs.push("callBackForRequestRandom_e");
+            logs.push("callBackForRequestRandom_f");
+            if(0<=nIndexFirstPrize-2){
             mapJoinersGroup[uuidRequest].prizerTwo.push(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize-1]);
             mapJoinersGroup[uuidRequest].prizerTwo.push(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize-2]);
+            }else{
+                logs.push("callBackForRequestRandom_g");
+            }
          }
     }
 

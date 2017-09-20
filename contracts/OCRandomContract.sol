@@ -6,7 +6,7 @@ contract OCRandomContract{
 
     uint seedCountNeeded = 3;
 
-    mapping(address=>uint) balances;
+    mapping(address=>uint) balance;
 
     struct OneRequest{
         bytes32 uuid;
@@ -46,70 +46,51 @@ contract OCRandomContract{
         logs.push("enter_sendOnlyHash");
         assert(getCurrentNeedsCount()>0);
         logs.push("enter_sendOnlyHasha");
-        assert(cacheRequests[nCurrentIndex].nHashGetedCount<seedCountNeeded);
+        //assert(cacheRequests[nCurrentIndex].nHashGetedCount<seedCountNeeded);
         logs.push("enter_sendOnlyHashb");
         //暂时先屏蔽，不然都没法测试了 assert(cacheRequests[nCurrentIndex].seedSender[msg.sender]!=1);//一个人，针对一个请求，只能投一次票
+        //cacheRequests[nCurrentIndex].seedSender[msg.sender] = 1;
+
         logs.push("enter_sendOnlyHashc");
-        cacheRequests[nCurrentIndex].seedSender[msg.sender] = 1;
+
+        assert(cacheRequests[nCurrentIndex].hashSeed[hash]!=1);
+        cacheRequests[nCurrentIndex].hashSeed[hash] = 1;
+
         logs.push("enter_sendOnlyHashd");
         cacheRequests[nCurrentIndex].nHashGetedCount++;
         logs.push("enter_sendOnlyHashe");
     }
 
-    function testEquel(string seed, bytes32 hash)public returns(bool){
-        logsbytes32.push(keccak256(seed));
-        logsbytes32.push(hash);
-        if(keccak256(seed)==hash){
-            return true;
-        }else{
-            return false;
-        }
+    function testPayBack()public payable{
+        msg.sender.transfer(payBackToSeedContribution);
     }
 
-    function sendSeedAndHash(bytes32 seed, bytes32 hash){
-        logsaddress.push(msg.sender);
-        logs.push("enter_sendSeedAndHash");
+    function withDraw()public{
+        msg.sender.transfer(balance[msg.sender]);
+    }
+
+    function sendSeedAndHash(bytes32 seed, bytes32 hash) public payable{
+
         assert(getCurrentNeedsCount()>0);
-        logs.push("enter_sendSeedAndHasha");
-
-        if(hash==keccak256(seed)){
-            logs.push("hash==keccak256(seed)");
-        }else{
-            logs.push("hash!=keccak256(seed)");
-        }
-        logsbytes32.push(seed);
-        logsbytes32.push(hash);
-
+        assert(cacheRequests[nCurrentIndex].nHashGetedCount>=seedCountNeeded);
         assert(hash==keccak256(seed));
-        logs.push("enter_sendSeedAndHashb");
-        assert(cacheRequests[nCurrentIndex].hashSeed[hash] != seed);//表示没有初始化过，或者曾经错误初始化过
-        logs.push("enter_sendSeedAndHashc");
-        assert(keccak256(seed)==hash);
-        logs.push("enter_sendSeedAndHashd");
+        assert(cacheRequests[nCurrentIndex].hashSeed[hash] == 1);//表示没有初始化过
 
-         //msg.sender.transfer(payBackToSeedContribution);
+         //balance[msg.sender] += payBackToSeedContribution;
 
          cacheRequests[nCurrentIndex].hashSeed[hash] = seed;
-         logs.push("enter_sendSeedAndHashe");
          cacheRequests[nCurrentIndex].seedIndex.push(hash);
-         logs.push("enter_sendSeedAndHashf");
          cacheRequests[nCurrentIndex].nSeedGetedCount++;
-         logs.push("enter_sendSeedAndHasg");
-
-         if(cacheRequests[nCurrentIndex].nHashGetedCount == seedCountNeeded){
-             logs.push("enter_sendSeedAndHashh");
+        logs.push("enter_sendSeedAndHasha");
+         if(cacheRequests[nCurrentIndex].nSeedGetedCount == seedCountNeeded){
              bytes memory strSeed;
              for(uint i=1; i<cacheRequests[nCurrentIndex].seedIndex.length; i++){
-                 logs.push("enter_sendSeedAndHashi");
                  bytes32  keytmp = cacheRequests[nCurrentIndex].seedIndex[i];
                  strSeed = addBytes(cacheRequests[nCurrentIndex].hashSeed[keytmp], strSeed);
              }
-             logs.push("enter_sendSeedAndHashj");
              cacheRequests[nCurrentIndex].callBack.callBackForRequestRandom(cacheRequests[nCurrentIndex].uuid, keccak256(strSeed));
              logs.push("enter_sendSeedAndHashk");
              nCurrentIndex++;
-             logs.push("enter_sendSeedAndHashl");
-
          }
     }
 

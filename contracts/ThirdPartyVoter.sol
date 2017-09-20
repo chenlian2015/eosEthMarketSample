@@ -20,5 +20,4 @@ contract ThirdPartyVoter{
         OCRandomContract ocRandomServer = OCRandomContract(oclpa.getServerAddress("OCRandomContract"));
         ocRandomServer.sendSeedAndHash(keccak256(seed), keccak256(keccak256(seed)));
     }
-
 }
