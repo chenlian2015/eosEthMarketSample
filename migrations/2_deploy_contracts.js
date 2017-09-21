@@ -5,9 +5,9 @@ var OCLotteryContract = artifacts.require('./OCLotteryContract.sol')
 var ThirdPartyVoter = artifacts.require('./ThirdPartyVoter.sol')
 
 module.exports = function(deployer) {
-  deployer.deploy(OCLPublicAddress);
-  deployer.deploy(OCLotteryContract);
-  deployer.deploy(OCMarket);
-  deployer.deploy(OCRandomContract);
-  deployer.deploy(ThirdPartyVoter);
+//   deployer.deploy(OCLPublicAddress);
+   deployer.deploy(OCLotteryContract);
+   deployer.deploy(OCMarket);
+   deployer.deploy(OCRandomContract);
+   deployer.deploy(ThirdPartyVoter);
 };

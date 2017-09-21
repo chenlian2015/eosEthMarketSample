@@ -8,24 +8,33 @@ contract OCMarket{
 
     OCLPublicAddress oclpa;
     mapping(address=>uint) balance;
-    uint randomFee;
+    uint randomFee = 0.0001 * 1000000000000000000;//10^18次方;
 
     function OCMarket(){
-        oclpa = OCLPublicAddress(0x002cacf5ee5d350d9c903435f6670650df97777e);
-        randomFee = 0.1*1000000000000000000;//10^18次方;
+        oclpa = OCLPublicAddress(0x8cb94b79cb4ea51e228b661cd38f81484d2632da);
     }
 
     function ()payable{
     }
 
-    function requestOneUUID(bytes32 uuidFrom, OCMarketInterface callBack) payable {
-        assert(balance[msg.sender]>=randomFee);
+    function record() payable{
+        logsaddress.push(msg.sender);
+        balance[msg.sender] += msg.value;
+    }
+
+    function getMyBalance(address addr)public returns(uint){
+        return balance[addr];
+    }
+
+    function requestOneUUID(bytes32 uuidFrom, OCMarketInterface callBack) public payable {
+        assert(msg.value>=randomFee);
+        record();
 
         balance[msg.sender]-=randomFee;
         logsaddress.push(msg.sender);
 
         OCRandomContract ocRandomServer = OCRandomContract(oclpa.getServerAddress("OCRandomContract"));
-        ocRandomServer.requestOneUUID(uuidFrom, callBack);
+        ocRandomServer.requestOneUUID.value(randomFee)(uuidFrom, callBack);
     }
 
     address[] public logsaddress;

@@ -1,30 +1,35 @@
 pragma solidity ^0.4.15;
+
+
 import "./OCMarketInterface.sol";
 import "./OCMarket.sol";
 import "./OCLPublicAddress.sol";
 
-contract OCLotteryContract is OCMarketInterface{
+
+contract OCLotteryContract is OCMarketInterface {
 
 
-    struct JoinersGroup{
-        bytes32 uuid;
-        address[] oneGroupLotteryJoiners;
-        address prizerOne;
-        address[] prizerTwo;
+    struct JoinersGroup {
+    bytes32 uuid;
+    address[] oneGroupLotteryJoiners;
+    address prizerOne;
+    address[] prizerTwo;
     }
 
     mapping (address => uint) balance;
 
-    uint oneTimeJoinFee;
-    uint currentIndex;
-    uint oneGroupJoiners;
+    uint oneTimeJoinFee = 0.000123456 * 1000000000000000000;//10^18次方
+    uint currentIndex = 0;
 
-    uint randomFee;
+    uint oneGroupJoiners = 5;
+
+    uint randomFee = 0.0001 * 1000000000000000000;//10^18次方;
 
     OCLPublicAddress oclpa;
+
     address[] lotteryJoiners;
 
-    mapping(bytes32=>JoinersGroup) mapJoinersGroup;
+    mapping (bytes32 => JoinersGroup) mapJoinersGroup;
 
     OCMarket ocMarket;
 
@@ -34,12 +39,8 @@ contract OCLotteryContract is OCMarketInterface{
 
 
     function OCLotteryContract(){
-        oneTimeJoinFee = 0.123456 * 1000000000000000000;//10^18次方
-        oneGroupJoiners = 5;
-        currentIndex = 0;
         lotteryJoiners = new address[](oneGroupJoiners);
-        randomFee = 0.1*1000000000000000000;//10^18次方;
-        oclpa = OCLPublicAddress(0x002cacf5ee5d350d9c903435f6670650df97777e);
+        oclpa = OCLPublicAddress(0x8cb94b79cb4ea51e228b661cd38f81484d2632da);
     }
 
     function() payable {
@@ -53,68 +54,69 @@ contract OCLotteryContract is OCMarketInterface{
         }
     }
 
-    function getBalance()public returns(uint){
+    function getBalance() public returns (uint){
         return balance[msg.sender];
     }
 
-    function transferToMarket()public{
-        oclpa.getServerAddress("OCMarket").transfer(randomFee);
-    }
 
-
-    function joinOneLottery() payable{
-        assert(currentIndex<oneGroupJoiners);
+    function joinOneLottery() payable {
+        assert(currentIndex < oneGroupJoiners);
         lotteryJoiners[currentIndex] = msg.sender;
 
-        if(currentIndex >= (oneGroupJoiners-1)){
+        if (currentIndex >= (oneGroupJoiners - 1)) {
             bytes32 uuid = keccak256(lotteryJoiners);
             mapJoinersGroup[uuid].uuid = keccak256(lotteryJoiners);
 
-            for(uint i=0; i<lotteryJoiners.length; i++){
+            for (uint i = 0; i < lotteryJoiners.length; i++) {
                 mapJoinersGroup[uuid].oneGroupLotteryJoiners.push(lotteryJoiners[i]);
             }
 
             ocMarket = OCMarket(oclpa.getServerAddress("OCMarket"));
-            ocMarket.requestOneUUID(uuid, this);
+            ocMarket.requestOneUUID.gas(4009217).value(randomFee)(uuid, this);
+
             currentIndex = 0;
         }
-        else{
+        else {
             currentIndex++;
         }
     }
 
     string[] public logs;
-    function logmyself(uint i) public returns(string){
+
+    function logmyself(uint i) public returns (string){
         return logs[i];
     }
 
-    function loglength() public returns(uint){
+    function loglength() public returns (uint){
         return logs.length;
     }
 
 
     function callBackForRequestRandom(bytes32 uuidRequest, bytes32 randomValue){
         logs.push("callBackForRequestRandom_b");
-        uint nIndexFirstPrize = uint(randomValue[0])%oneGroupJoiners;
+        uint nIndexFirstPrize = uint(randomValue[0]) % oneGroupJoiners;
         mapJoinersGroup[uuidRequest].prizerOne = mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize];
         logs.push("callBackForRequestRandom_c");
-        if(nIndexFirstPrize <(oneGroupJoiners/2)){
+        if (nIndexFirstPrize < (oneGroupJoiners / 2)) {
             logs.push("callBackForRequestRandom_d");
-            if(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners.length>nIndexFirstPrize+2){
-            mapJoinersGroup[uuidRequest].prizerTwo.push(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize+1]);
-            mapJoinersGroup[uuidRequest].prizerTwo.push(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize+2]);
-            }else{
+            if (mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners.length > nIndexFirstPrize + 2) {
+                mapJoinersGroup[uuidRequest].prizerTwo.push(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize + 1]);
+                mapJoinersGroup[uuidRequest].prizerTwo.push(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize + 2]);
+            }
+            else {
                 logs.push("callBackForRequestRandom_e");
             }
-        }else{
+        }
+        else {
             logs.push("callBackForRequestRandom_f");
-            if(0<=nIndexFirstPrize-2){
-            mapJoinersGroup[uuidRequest].prizerTwo.push(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize-1]);
-            mapJoinersGroup[uuidRequest].prizerTwo.push(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize-2]);
-            }else{
+            if (0 <= nIndexFirstPrize - 2) {
+                mapJoinersGroup[uuidRequest].prizerTwo.push(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize - 1]);
+                mapJoinersGroup[uuidRequest].prizerTwo.push(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize - 2]);
+            }
+            else {
                 logs.push("callBackForRequestRandom_g");
             }
-         }
+        }
     }
 
 }
