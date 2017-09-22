@@ -3,13 +3,18 @@
 第一步安装环境(每个软件都有自己的官文安装方式)
 1.安装testrpc
 https://github.com/ethereumjs/testrpc
+
 2.安装geth
 https://ethereum.github.io/go-ethereum/install/
+
 3.安装truffle
 https://github.com/trufflesuite/truffle
+
 4.安装intellij的solidity插件
+
 5.用git 下载抽奖相关代码
 https://github.com/chenlian2015/eosEthMarketSample.git
+
 
 第二步运行步骤
 在控制台1
