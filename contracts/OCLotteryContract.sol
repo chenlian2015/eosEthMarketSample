@@ -11,6 +11,7 @@ contract OCLotteryContract is OCMarketInterface {
 
     struct JoinersGroup {
     bytes32 uuid;
+    //address[] oneGroupLotteryJoiners;
     address[] oneGroupLotteryJoiners;
     address prizerOne;
     address[] prizerTwo;
@@ -47,11 +48,15 @@ contract OCLotteryContract is OCMarketInterface {
         balance[msg.sender] += msg.value;
         if (balance[msg.sender] >= oneTimeJoinFee) {
             joinOneLottery();
-            balance[msg.sender] -= msg.value;
+            balance[msg.sender] -= oneTimeJoinFee;
         }
         else {
             LogFeeNotEnoughForJoinLottery(msg.sender, msg.value, oneTimeJoinFee);
         }
+    }
+
+    function getCurrentLotteryJoiners()public returns(address[]){
+        return lotteryJoiners;
     }
 
     function getBalance() public returns (uint){
@@ -96,6 +101,8 @@ contract OCLotteryContract is OCMarketInterface {
         logs.push("callBackForRequestRandom_b");
         uint nIndexFirstPrize = uint(randomValue[0]) % oneGroupJoiners;
         mapJoinersGroup[uuidRequest].prizerOne = mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize];
+
+
         logs.push("callBackForRequestRandom_c");
         if (nIndexFirstPrize < (oneGroupJoiners / 2)) {
             logs.push("callBackForRequestRandom_d");
@@ -117,6 +124,19 @@ contract OCLotteryContract is OCMarketInterface {
                 logs.push("callBackForRequestRandom_g");
             }
         }
+
+        balance[mapJoinersGroup[uuidRequest].prizerOne] += oneTimeJoinFee*2;
+        balance[mapJoinersGroup[uuidRequest].prizerTwo[0]] += oneTimeJoinFee;
+        balance[mapJoinersGroup[uuidRequest].prizerTwo[1]] += oneTimeJoinFee;
+    }
+
+    function getLotteryResultTotal(address joiner)public returns(uint){
+        return balance[joiner];
+    }
+
+    function withDrawMyBalance()public {
+        msg.sender.transfer(balance[msg.sender]);
+        balance[msg.sender] = 0;
     }
 
 }

@@ -4,33 +4,35 @@ pragma solidity ^0.4.15;
 import "./OCMarketInterface.sol";
 import "./OCVoterInterface.sol";
 
+
 contract OCRandomContract {
 
     uint seedCountNeeded = 3;
 
     mapping (address => uint) balance;
+
     uint randomFee = 0.0001 * 1000000000000000000;//10^18次方;
 
     struct OneRequest {
-        bytes32 uuid;
+    bytes32 uuid;
 
-        mapping (bytes32 => bytes32) hashSeed;
-        mapping (address => int) seedSender;
+    mapping (bytes32 => bytes32) hashSeed;
+    mapping (address => int) seedSender;
 
-        bytes32[] seedIndex;//为了遍历hashSeed
-        uint nHashGetedCount;
-        uint nSeedGetedCount;
-        OCMarketInterface callBack;//请求可能来自不同的服务,所以需要一个活的变量
+    bytes32[] seedIndex;//为了遍历hashSeed
+    uint nHashGetedCount;
+    uint nSeedGetedCount;
+    OCMarketInterface callBack;//请求可能来自不同的服务,所以需要一个活的变量
     }
 
     OneRequest[] cacheRequests;
 
     uint nCurrentIndex = 0;
 
-    uint payBackToSeedContribution = 0.00001*1000000000000000000;//10^18次方;
+    uint payBackToSeedContribution = 0.00001 * 1000000000000000000;//10^18次方;
 
     function requestOneUUID(bytes32 uuidFrom, OCMarketInterface callBack) payable {
-        assert(msg.value>=randomFee);
+        assert(msg.value >= randomFee);
         logsaddress.push(msg.sender);
         OneRequest memory oneRequest;
         oneRequest.uuid = uuidFrom;
@@ -59,7 +61,8 @@ contract OCRandomContract {
         }
 
         logs.push("sendOnlyHash:assert(cacheRequests[nCurrentIndex].seedSender[msg.sender]!=1)");
-        //一个人，针对一个请求，只能投一次票  assert(cacheRequests[nCurrentIndex].seedSender[msg.sender] != 1);
+        //一个人，针对一个请求，只能投一次票
+        assert(cacheRequests[nCurrentIndex].seedSender[msg.sender] != 1);
         cacheRequests[nCurrentIndex].seedSender[msg.sender] = 1;
 
 
@@ -77,6 +80,14 @@ contract OCRandomContract {
     function withDrawToMyAccount() internal {
         OCVoterInterface ovi = OCVoterInterface(msg.sender);
         ovi.withDraw.value(payBackToSeedContribution)();
+    }
+
+    function currentStatus() public returns (bytes32, uint, uint){
+        if (cacheRequests.length > 0) {
+            return (cacheRequests[nCurrentIndex].uuid, cacheRequests[nCurrentIndex].nHashGetedCount, cacheRequests[nCurrentIndex].nSeedGetedCount);
+        }else{
+            return (0,0,0);
+        }
     }
 
     function sendSeedAndHash(bytes32 seed, bytes32 hash) public payable {

@@ -17,8 +17,6 @@ contract('OCRandomContract', function (accounts) {
    将各个合约地址注册到OCLPublicAddress中
   */
   var OCLPublicAddressAbstraction = OCLPublicAddress.at('0x8cb94b79cb4ea51e228b661cd38f81484d2632da')
-
-
   var addrOCLotteryContract = '0x8ae305bda0ec07c8a38ff7bf4a85f85654591f5b'
   var addrOCMarket = '0x099825d6ad61c97dfbbcc51f7cfcb5bd35305526'
   var addrOCRandomContract = '0xa72fc9ed54fbb381cf493aeec6f2ea1315925438'
@@ -31,24 +29,34 @@ contract('OCRandomContract', function (accounts) {
   }
   /*步骤2---end*/
 
+  /*步骤3
+账号0x3175ed2090ae165fca3434fb363f40e31a2a6b4c开始参与抽奖
+1.eth.sendTransaction({from:"0x3175ed2090ae165fca3434fb363f40e31a2a6b4c", to:"0x541123f25fc3ca42c1418f9bd374e2fa08d7c33b", gas:1000000, 'gasPrice': web3.toWei(0.00000001, 'ether'), "value": "123456000000000000"})
+2.一直到有5个用户则形成一组，会自动进入随机数请求环节
+* */
+
+  /*步骤4
+1.第三发合约ThirdPartyVoter调用随机数合约OCRandomContract开始提供种子和随机数
+2.随机数合约在拥有3个匹配随机源后，开始回调抽奖合约，并提供相应的随机数
+下面例子没有切换账户，是为了便于测试，否则测试工作量很大，正式环境需要不同的用户提供随机种子，每个任务一个用户只能提供一次正确的种子，但可以随便攻击，没有关系
+*/if(true)
+  {
+    var ThirdPartyVoterAbstraction = ThirdPartyVoter.at(addrThirdPartyVoter)
+
+    ThirdPartyVoterAbstraction.sendOnlyHash('123456')
+    ThirdPartyVoterAbstraction.sendOnlyHash('1234567')
+    ThirdPartyVoterAbstraction.sendOnlyHash('12345678')
+
+    ThirdPartyVoterAbstraction.sendSeedAndHash('123456')
+    ThirdPartyVoterAbstraction.sendSeedAndHash('1234567')
+    ThirdPartyVoterAbstraction.sendSeedAndHash('12345678')
+    /*步骤5---end---*/
+  }
+
+  /*日志查看步骤
+* */
   if (false) {
     var OCLotteryContractAbstraction = OCLotteryContract.at(addrOCLotteryContract)
-
-    /*步骤3
-      1.用钱包转1个eth到OCLotteryContract
-    */
-    /*步骤3---end---
-     */
-    var OCMarketAbstraction = OCMarket.at(addrOCMarket)
-    OCMarketAbstraction.logaddresslength.call().then(function (result) {
-      console.log('OCMarketAbstraction:' + result)
-    })
-
-    /*步骤4
-    账号0x3175ed2090ae165fca3434fb363f40e31a2a6b4c开始参与抽奖
-    1.eth.sendTransaction({from:"0x3175ed2090ae165fca3434fb363f40e31a2a6b4c", to:"0x541123f25fc3ca42c1418f9bd374e2fa08d7c33b", gas:1000000, 'gasPrice': web3.toWei(0.00000001, 'ether'), "value": "123456000000000000"})
-    2.一直到有5个用户则形成一组，会自动进入随机数请求环节
-    * */
 
     OCLotteryContractAbstraction.loglength.call().then(function (result) {
       console.log('OCLotteryContractAbstraction log count:')
@@ -60,13 +68,10 @@ contract('OCRandomContract', function (accounts) {
       }
     })
 
-    /*步骤6
-    查看抽奖结果
-    */
     var OCMarketAbstraction = OCMarket.at(addrOCMarket)
-    // OCMarketAbstraction.logaddressmyself.call(0).then(function (result) {
-    //   console.log('OCMarketAbstraction:' + result)
-    // })
+    OCMarketAbstraction.logaddressmyself.call(0).then(function (result) {
+      console.log('OCMarketAbstraction:' + result)
+    })
 
     var OCRandomContractAbstraction = OCRandomContract.at(addrOCRandomContract)
 
@@ -89,23 +94,11 @@ contract('OCRandomContract', function (accounts) {
         })
       }
     })
-    /*步骤6---end*/
 
-  } else {
-    /*步骤5
-    1.第三发合约ThirdPartyVoter调用随机数合约OCRandomContract开始提供种子和随机数
-    2.随机数合约在拥有3个匹配随机源后，开始回调抽奖合约，并提供相应的随机数
-    下面例子没有切换账户，是为了便于测试，否则测试工作量很大，正式环境需要不同的用户提供随机种子，每个任务一个用户只能提供一次正确的种子，但可以随便攻击，没有关系
-    */
-    var ThirdPartyVoterAbstraction = ThirdPartyVoter.at(addrThirdPartyVoter)
+    OCRandomContractAbstraction.currentStatus.call().then(function(result){
+        console.log("currentStatus:");
+        console.log(result);
+    });
 
-    ThirdPartyVoterAbstraction.sendOnlyHash('123456')
-    ThirdPartyVoterAbstraction.sendOnlyHash('1234567')
-    ThirdPartyVoterAbstraction.sendOnlyHash('12345678')
-
-    ThirdPartyVoterAbstraction.sendSeedAndHash('123456')
-    ThirdPartyVoterAbstraction.sendSeedAndHash('1234567')
-    ThirdPartyVoterAbstraction.sendSeedAndHash('12345678')
-    /*步骤5---end---*/
   }
 })
