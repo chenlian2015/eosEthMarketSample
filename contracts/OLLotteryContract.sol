@@ -1,17 +1,16 @@
 pragma solidity ^0.4.15;
 
 
-import "./OCMarketInterface.sol";
-import "./OCMarket.sol";
-import "./OCLPublicAddress.sol";
+import "./OLRandomContractInterface.sol";
+import "./OLMarket.sol";
+import "./OLPublicAddress.sol";
 
 
-contract OCLotteryContract is OCMarketInterface {
+contract OLLotteryContract is OLRandomContractInterface {
 
 
     struct JoinersGroup {
     bytes32 uuid;
-    //address[] oneGroupLotteryJoiners;
     address[] oneGroupLotteryJoiners;
     address prizerOne;
     address[] prizerTwo;
@@ -26,13 +25,13 @@ contract OCLotteryContract is OCMarketInterface {
 
     uint randomFee = 0.0001 * 1000000000000000000;//10^18次方;
 
-    OCLPublicAddress oclpa;
+    OLPublicAddress oclpa;
 
     address[] lotteryJoiners;
 
     mapping (bytes32 => JoinersGroup) mapJoinersGroup;
 
-    OCMarket ocMarket;
+    OLMarket ocMarket;
 
     event LogJoinOneLottery(address bidder, uint amountto, uint amountfrom); // Event
     event LogFeeNotEnoughForJoinLottery(address bidder, uint sent, uint realNeed); // Event
@@ -41,7 +40,7 @@ contract OCLotteryContract is OCMarketInterface {
 
     function OCLotteryContract(){
         lotteryJoiners = new address[](oneGroupJoiners);
-        oclpa = OCLPublicAddress(0x8cb94b79cb4ea51e228b661cd38f81484d2632da);
+        oclpa = OLPublicAddress(0x8cb94b79cb4ea51e228b661cd38f81484d2632da);
     }
 
     function() payable {
@@ -55,7 +54,7 @@ contract OCLotteryContract is OCMarketInterface {
         }
     }
 
-    function getCurrentLotteryJoiners()public returns(address[]){
+    function getCurrentLotteryJoiners() public returns (address[]){
         return lotteryJoiners;
     }
 
@@ -76,7 +75,7 @@ contract OCLotteryContract is OCMarketInterface {
                 mapJoinersGroup[uuid].oneGroupLotteryJoiners.push(lotteryJoiners[i]);
             }
 
-            ocMarket = OCMarket(oclpa.getServerAddress("OCMarket"));
+            ocMarket = OLMarket(oclpa.getServerAddress("OCMarket"));
             ocMarket.requestOneUUID.gas(4009217).value(randomFee)(uuid, this);
 
             currentIndex = 0;
@@ -84,16 +83,6 @@ contract OCLotteryContract is OCMarketInterface {
         else {
             currentIndex++;
         }
-    }
-
-    string[] public logs;
-
-    function logmyself(uint i) public returns (string){
-        return logs[i];
-    }
-
-    function loglength() public returns (uint){
-        return logs.length;
     }
 
 
@@ -125,16 +114,16 @@ contract OCLotteryContract is OCMarketInterface {
             }
         }
 
-        balance[mapJoinersGroup[uuidRequest].prizerOne] += oneTimeJoinFee*2;
+        balance[mapJoinersGroup[uuidRequest].prizerOne] += oneTimeJoinFee * 2;
         balance[mapJoinersGroup[uuidRequest].prizerTwo[0]] += oneTimeJoinFee;
         balance[mapJoinersGroup[uuidRequest].prizerTwo[1]] += oneTimeJoinFee;
     }
 
-    function getLotteryResultTotal(address joiner)public returns(uint){
+    function getLotteryResultTotal(address joiner) public returns (uint){
         return balance[joiner];
     }
 
-    function withDrawMyBalance()public {
+    function withDrawMyBalance() public {
         msg.sender.transfer(balance[msg.sender]);
         balance[msg.sender] = 0;
     }

@@ -1,11 +1,10 @@
 pragma solidity ^0.4.15;
 
 
-import "./OCMarketInterface.sol";
-import "./OCVoterInterface.sol";
+import "./OLRandomContractCallBackInterface.sol";
+import "./OLServerInterface.sol";
 
-
-contract OCRandomContract {
+contract OLRandomContract is OLRandomContractCallBackInterface,OLServerInterface{
 
     uint seedCountNeeded = 3;
 
@@ -14,60 +13,78 @@ contract OCRandomContract {
     uint randomFee = 0.0001 * 1000000000000000000;//10^18次方;
 
     struct OneRequest {
-    bytes32 uuid;
 
-    mapping (bytes32 => bytes32) hashSeed;
-    mapping (address => int) seedSender;
+        address callBackAddress;
 
-    bytes32[] seedIndex;//为了遍历hashSeed
-    uint nHashGetedCount;
-    uint nSeedGetedCount;
-    OCMarketInterface callBack;//请求可能来自不同的服务,所以需要一个活的变量
+        mapping (bytes32 => bytes32) hashSeed;
+        mapping (address => int) seedSender;
+
+        bytes32[] seedIndex;//为了遍历hashSeed
+        uint nHashGetedCount;
+        uint nSeedGetedCount;
+        OLRandomContractInterface callBack;//请求可能来自不同的服务,所以需要一个活的变量
     }
 
     OneRequest[] cacheRequests;
 
-    uint nCurrentIndex = 0;
+    uint nCurrentIndex = - 1;
 
     uint payBackToSeedContribution = 0.00001 * 1000000000000000000;//10^18次方;
 
-    function requestOneUUID(bytes32 uuidFrom, OCMarketInterface callBack) payable {
+    function() payable {
+    }
+
+    function OCRandomServer(){
+        nCurrentIndex = - 1;
+    }
+
+    function requestOneUUID(address callBackAddress, uint versionCaller) public returns(uint code){
+
+        OLPublicAddress oclpa = OLPublicAddress(0x8cb94b79cb4ea51e228b661cd38f81484d2632da);
+        OLMarketServerInterface olMarketServerInterface = oclpa.getServerAddress("OLMarket");
+        uint nCode = olMarketServerInterface.preCheckServerCall("OLRandomContract", versionCaller);
+        if(nCode != 0){
+            return nCode;
+        }
+
+        if (nCurrentIndex == - 1) {
+            nCurrentIndex = 0;
+        }
+
         assert(msg.value >= randomFee);
         logsaddress.push(msg.sender);
         OneRequest memory oneRequest;
-        oneRequest.uuid = uuidFrom;
+        oneRequest.callBackAddress = callBackAddress;
         oneRequest.nHashGetedCount = 0;
         oneRequest.callBack = callBack;
         cacheRequests.push(oneRequest);
 
         balance[msg.sender] += msg.value;
+        return 0;
     }
 
-    function OCRandomServer(){
-        nCurrentIndex = 0;
-    }
-
-    function() payable {
+    function callServer(address callFrom, uint versionCaller) public{
+        OLPublicAddress oclpa = OLPublicAddress(0x8cb94b79cb4ea51e228b661cd38f81484d2632da);
+        if(msg.sender == oclpa.getServerAddress("OLMarket")){
+            requestOneUUID(callFrom);
+        }
     }
 
     function sendOnlyHash(bytes32 hash) public {
-        logsaddress.push(msg.sender);
+
         if (getCurrentNeedsCount() > 0) {
-            logs.push("sendOnlyHash:getCurrentNeedsCount()>0");
             assert(getCurrentNeedsCount() > 0);
         }
         else {
             return;
         }
 
-        logs.push("sendOnlyHash:assert(cacheRequests[nCurrentIndex].seedSender[msg.sender]!=1)");
         //一个人，针对一个请求，只能投一次票
         assert(cacheRequests[nCurrentIndex].seedSender[msg.sender] != 1);
         cacheRequests[nCurrentIndex].seedSender[msg.sender] = 1;
 
 
         if (cacheRequests[nCurrentIndex].hashSeed[hash] != 1) {
-            logs.push("sendOnlyHash:cacheRequests[nCurrentIndex].hashSeed[hash]!=1");
             assert(cacheRequests[nCurrentIndex].hashSeed[hash] != 1);
             cacheRequests[nCurrentIndex].hashSeed[hash] = 1;
             cacheRequests[nCurrentIndex].nHashGetedCount++;
@@ -77,16 +94,12 @@ contract OCRandomContract {
         }
     }
 
-    function withDrawToMyAccount() internal {
-        OCVoterInterface ovi = OCVoterInterface(msg.sender);
-        ovi.withDraw.value(payBackToSeedContribution)();
-    }
-
-    function currentStatus() public returns (bytes32, uint, uint){
-        if (cacheRequests.length > 0) {
-            return (cacheRequests[nCurrentIndex].uuid, cacheRequests[nCurrentIndex].nHashGetedCount, cacheRequests[nCurrentIndex].nSeedGetedCount);
-        }else{
-            return (0,0,0);
+    function currentStatus() public returns (bool){
+        if (nCurrentIndex == - 1) {
+            return (cacheRequests[nCurrentIndex].seedSender[msg.sender] != 1);
+        }
+        else {
+            return false;
         }
     }
 
@@ -94,7 +107,6 @@ contract OCRandomContract {
 
         if (getCurrentNeedsCount() > 0) {
             assert(getCurrentNeedsCount() > 0);
-            logs.push("sendSeedAndHash:getCurrentNeedsCount()>0");
         }
         else {
             return;
@@ -102,7 +114,6 @@ contract OCRandomContract {
 
         if (cacheRequests[nCurrentIndex].nHashGetedCount >= seedCountNeeded) {
             assert(cacheRequests[nCurrentIndex].nHashGetedCount >= seedCountNeeded);
-            logs.push("sendSeedAndHash:cacheRequests[nCurrentIndex].nHashGetedCount >= seedCountNeeded");
         }
         else {
             return;
@@ -110,7 +121,6 @@ contract OCRandomContract {
 
         if (hash == keccak256(seed)) {
             assert(hash == keccak256(seed));
-            logs.push("sendSeedAndHash:hash == keccak256(seed)");
         }
         else {
             return;
@@ -118,7 +128,6 @@ contract OCRandomContract {
 
         if (cacheRequests[nCurrentIndex].hashSeed[hash] == 1) {
             assert(cacheRequests[nCurrentIndex].hashSeed[hash] == 1);
-            logs.push("sendSeedAndHash:cacheRequests[nCurrentIndex].hashSeed[hash] == 1");
             //表示没有初始化过
         }
         else {
@@ -129,7 +138,6 @@ contract OCRandomContract {
         cacheRequests[nCurrentIndex].seedIndex.push(hash);
         cacheRequests[nCurrentIndex].nSeedGetedCount++;
 
-        withDrawToMyAccount();
 
         if (cacheRequests[nCurrentIndex].nSeedGetedCount == seedCountNeeded) {
             bytes memory strSeed;
@@ -137,7 +145,10 @@ contract OCRandomContract {
                 bytes32 keytmp = cacheRequests[nCurrentIndex].seedIndex[i];
                 strSeed = addBytes(cacheRequests[nCurrentIndex].hashSeed[keytmp], strSeed);
             }
-            cacheRequests[nCurrentIndex].callBack.callBackForRequestRandom(cacheRequests[nCurrentIndex].uuid, keccak256(strSeed));
+
+
+            OLRandomContractCallBackInterface olRandomContractCallBackInterface = OLRandomContractCallBackInterface(cacheRequests[nCurrentIndex].callBackAddress);
+            olRandomContractCallBackInterface.callBackForRequestRandom(keccak256(strSeed));
             nCurrentIndex++;
         }
     }
@@ -165,44 +176,5 @@ contract OCRandomContract {
 
     function getCurrentNeedsCount() public returns (uint){
         return cacheRequests.length - nCurrentIndex;
-    }
-
-
-    string[] public logs;
-
-    function logmyself(uint i) public returns (string){
-        return logs[i];
-    }
-
-    function loglength() public returns (uint){
-        return logs.length;
-    }
-
-    bytes32[] public logsbytes32;
-
-    function logsbytes32length() public returns (uint){
-        return logsbytes32.length;
-    }
-
-    function logsbytes32myself(uint i) public returns (bytes32){
-        return logsbytes32[i];
-    }
-
-    address[] public logsaddress;
-
-    function logaddresslength() public returns (uint){
-        return logsaddress.length;
-    }
-
-    function logaddressmyself(uint i) public returns (address){
-        return logsaddress[i];
-    }
-
-    function logrequestlength() public returns (uint){
-        return cacheRequests.length;
-    }
-
-    function logcurrentindex() public returns (uint){
-        return nCurrentIndex;
     }
 }

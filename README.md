@@ -32,11 +32,11 @@ geth attach rpc:http://localhost:8545
 
 .部署eosEthMarketSample到testrpc环境"truffle migrate"
 
-.将部署的OCLPublicAddressAbstraction的地址覆替换到eosEthMarketSample的代码中
+.将部署的OLPublicAddressAbstraction的地址覆替换到eosEthMarketSample的代码中
 
 .再次重新部署整个项目"truffle migrate"
 
-.将OCLotteryContract OCMarket OCRandomContract ThirdPartyVoter的部署地址替换到humanStandardToken.js文件中去
+.将OCLotteryContract OCMarket OLRandomContract ThirdPartyVoter的部署地址替换到humanStandardToken.js文件中去
 
 .truffle test运行测试代码
 
@@ -51,12 +51,12 @@ geth attach rpc:http://localhost:8545
 
 OCLotteryContract.sol//抽奖合约
 
-OCLPublicAddress.sol//欧链公共地址合约
+OLPublicAddress.sol//欧链公共地址合约
 
 OCMarket.sol//欧链市场合约
 
-OCMarketInterface.sol//市场接口合约(目前只提供了随机数chuli)
+OLMarketInterface.sol//市场接口合约(目前只提供了随机数chuli)
 
-OCRandomContract.sol//随机数合约
+OLRandomContract.sol//随机数合约
 
 ThirdPartyVoter.sol//随机种子提供者合约
