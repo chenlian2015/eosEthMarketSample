@@ -31,7 +31,7 @@ contract OLLotteryContract is OLRandomContractInterface {
 
     mapping (bytes32 => JoinersGroup) mapJoinersGroup;
 
-    OLMarket ocMarket;
+    OLMarketServerInterface ocMarket;
 
     event LogJoinOneLottery(address bidder, uint amountto, uint amountfrom); // Event
     event LogFeeNotEnoughForJoinLottery(address bidder, uint sent, uint realNeed); // Event
@@ -75,9 +75,8 @@ contract OLLotteryContract is OLRandomContractInterface {
                 mapJoinersGroup[uuid].oneGroupLotteryJoiners.push(lotteryJoiners[i]);
             }
 
-            ocMarket = OLMarket(oclpa.getServerAddress("OCMarket"));
-            ocMarket.requestOneUUID.gas(4009217).value(randomFee)(uuid, this);
-
+            ocMarket = OLMarketServerInterface(oclpa.getServerAddress("OCMarket"));
+            ocMarket.callServer("OLRandomContract", 1);
             currentIndex = 0;
         }
         else {
@@ -87,30 +86,24 @@ contract OLLotteryContract is OLRandomContractInterface {
 
 
     function callBackForRequestRandom(bytes32 uuidRequest, bytes32 randomValue){
-        logs.push("callBackForRequestRandom_b");
         uint nIndexFirstPrize = uint(randomValue[0]) % oneGroupJoiners;
         mapJoinersGroup[uuidRequest].prizerOne = mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize];
 
 
-        logs.push("callBackForRequestRandom_c");
         if (nIndexFirstPrize < (oneGroupJoiners / 2)) {
-            logs.push("callBackForRequestRandom_d");
             if (mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners.length > nIndexFirstPrize + 2) {
                 mapJoinersGroup[uuidRequest].prizerTwo.push(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize + 1]);
                 mapJoinersGroup[uuidRequest].prizerTwo.push(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize + 2]);
             }
             else {
-                logs.push("callBackForRequestRandom_e");
             }
         }
         else {
-            logs.push("callBackForRequestRandom_f");
             if (0 <= nIndexFirstPrize - 2) {
                 mapJoinersGroup[uuidRequest].prizerTwo.push(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize - 1]);
                 mapJoinersGroup[uuidRequest].prizerTwo.push(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize - 2]);
             }
             else {
-                logs.push("callBackForRequestRandom_g");
             }
         }
 

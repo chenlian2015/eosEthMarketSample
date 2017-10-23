@@ -1,7 +1,9 @@
 pragma solidity ^0.4.15;
+import "./OLFeeManagerInterface.sol";
+import "./OLSuperManager.sol";
 
 
-contract OLFeeManager is OLFeeManagerInterfacce{
+contract OLFeeManager is OLFeeManagerInterface{
 
     mapping (string => uint)  feeSetting;
 

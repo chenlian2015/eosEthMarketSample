@@ -1,5 +1,5 @@
 pragma solidity ^0.4.15;
-
+import "./OLSuperManager.sol";
 
 contract OLPublicAddress {
 
@@ -7,7 +7,7 @@ contract OLPublicAddress {
 
     mapping (string => uint) serverFee;//服务费
 
-    /**
+    /*
     如果要删除一个服务，则contractAddress设置值为0即可
     if you want to delete one contractName,just set contractAddress=0
     @param fee,means the fee you need to provide to call this server

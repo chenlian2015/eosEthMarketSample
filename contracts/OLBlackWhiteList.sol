@@ -2,9 +2,9 @@ pragma solidity ^0.4.15;
 
 
 contract OLBlackWhiteList {
-    int private notinuse = - 1;
+    uint private notinuse = 2;
 
-    int private inuse = 1;
+    uint private inuse = 1;
 
     mapping (string => mapping (address => uint)) whiteList;
 

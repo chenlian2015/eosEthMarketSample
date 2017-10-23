@@ -2,9 +2,8 @@ pragma solidity ^0.4.15;
 
 import "./OLRandomContract.sol";
 import "./OLPublicAddress.sol";
-import "./OLVoterInterface.sol";
 
-contract ThirdPartyVoter is OLVoterInterface{
+contract ThirdPartyVoter{
 
     OLPublicAddress oclpa;
 

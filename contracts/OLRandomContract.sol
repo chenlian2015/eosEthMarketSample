@@ -3,6 +3,10 @@ pragma solidity ^0.4.15;
 
 import "./OLRandomContractCallBackInterface.sol";
 import "./OLServerInterface.sol";
+import "./OLRandomContractInterface.sol";
+import "./OLPublicAddress.sol";
+import "./OLServerInterface.sol";
+import "./OLMarketServerInterface.sol";
 
 contract OLRandomContract is OLRandomContractCallBackInterface,OLServerInterface{
 
@@ -27,7 +31,7 @@ contract OLRandomContract is OLRandomContractCallBackInterface,OLServerInterface
 
     OneRequest[] cacheRequests;
 
-    uint nCurrentIndex = - 1;
+    uint nCurrentIndex = 0;
 
     uint payBackToSeedContribution = 0.00001 * 1000000000000000000;//10^18次方;
 
@@ -35,38 +39,33 @@ contract OLRandomContract is OLRandomContractCallBackInterface,OLServerInterface
     }
 
     function OCRandomServer(){
-        nCurrentIndex = - 1;
+        nCurrentIndex = 0;
     }
 
     function requestOneUUID(address callBackAddress, uint versionCaller) public returns(uint code){
 
         OLPublicAddress oclpa = OLPublicAddress(0x8cb94b79cb4ea51e228b661cd38f81484d2632da);
-        OLMarketServerInterface olMarketServerInterface = oclpa.getServerAddress("OLMarket");
+        OLMarketServerInterface olMarketServerInterface = OLMarketServerInterface(oclpa.getServerAddress("OLMarket"));
         uint nCode = olMarketServerInterface.preCheckServerCall("OLRandomContract", versionCaller);
         if(nCode != 0){
             return nCode;
         }
 
-        if (nCurrentIndex == - 1) {
-            nCurrentIndex = 0;
-        }
-
         assert(msg.value >= randomFee);
-        logsaddress.push(msg.sender);
+
         OneRequest memory oneRequest;
         oneRequest.callBackAddress = callBackAddress;
         oneRequest.nHashGetedCount = 0;
-        oneRequest.callBack = callBack;
         cacheRequests.push(oneRequest);
 
         balance[msg.sender] += msg.value;
         return 0;
     }
 
-    function callServer(address callFrom, uint versionCaller) public{
+    function callServer(address callFrom, uint versionCaller) public returns (bool){
         OLPublicAddress oclpa = OLPublicAddress(0x8cb94b79cb4ea51e228b661cd38f81484d2632da);
         if(msg.sender == oclpa.getServerAddress("OLMarket")){
-            requestOneUUID(callFrom);
+            requestOneUUID(callFrom, versionCaller);
         }
     }
 
@@ -94,8 +93,8 @@ contract OLRandomContract is OLRandomContractCallBackInterface,OLServerInterface
         }
     }
 
-    function currentStatus() public returns (bool){
-        if (nCurrentIndex == - 1) {
+    function ever() public returns (bool){
+        if (getCurrentNeedsCount() > 0) {
             return (cacheRequests[nCurrentIndex].seedSender[msg.sender] != 1);
         }
         else {

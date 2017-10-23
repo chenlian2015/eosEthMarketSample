@@ -18,7 +18,7 @@ contract OLSuperManager {
         }
 
         permissionUserToServer[server][user] = true;
-        return true;
+        return 0;
     }
 
     function removePermission(address user, string server) public returns (uint){

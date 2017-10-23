@@ -4,7 +4,7 @@ import "./StantardTokenInterface.sol";
 
 contract StandardToken is StantardTokenInterface {
 
-    uint256 constant MAX_UINT256 = 2**256 - 1;
+    uint256 constant MAX_UINT256 = 2*256 - 1;
 
     function transfer(address _to, uint256 _value) returns (bool success) {
         //Default assumes totalSupply can't be over max (2^256 - 1).

@@ -5,6 +5,9 @@ import "./OLRandomContract.sol";
 import "./OLPublicAddress.sol";
 import "./OLMarketServerInterface.sol";
 import "./OLServerInterface.sol";
+import "./OLBlackWhiteListInterface.sol";
+import "./StantardTokenInterface.sol";
+import "./OLFeeManagerInterface.sol";
 
 
 contract OLMarket is OLMarketServerInterface {
@@ -18,8 +21,8 @@ contract OLMarket is OLMarketServerInterface {
     }
 
     function getFee(string servarName) public returns (uint){
-        OLServerInterface olServerInterface = OLServerInterface(oclpa.getServerAddress(servarName));
-        return olServerInterface.getFee();
+        OLFeeManagerInterface olServerInterface = OLFeeManagerInterface(oclpa.getServerAddress("OLFeeManager"));
+        return olServerInterface.getFee(servarName);
     }
 
 
@@ -41,7 +44,7 @@ contract OLMarket is OLMarketServerInterface {
 
     function preCheckServerCall(string servarName, uint versionCaller) public returns (uint errorCode){
         OLServerInterface olServerInterface = OLServerInterface(oclpa.getServerAddress(servarName));
-        if (versionCaller != getCurrentVersion) {
+        if (versionCaller != getCurrentVersion()) {
             return 3;
         }
 
@@ -53,11 +56,14 @@ contract OLMarket is OLMarketServerInterface {
         StantardTokenInterface stantardTokenInterface = StantardTokenInterface(oclpa.getServerAddress("OracleChainToken"));
         uint n = stantardTokenInterface.allowance(msg.sender, oclpa.getServerAddress("octManager"));
 
-        OLFeeManagerInterfacce olFeeManagerInterfacce = OLFeeManagerInterfacce(oclpa.getServerAddress("OLFeeManager"));
-        if (n < olServerInterface.getFee(servarName)) {
+        OLFeeManagerInterface olFeeManagerInterface = OLFeeManagerInterface(oclpa.getServerAddress("OLFeeManager"));
+        uint nFeeNeeded = olFeeManagerInterface.getFee(servarName);
+        if (n < nFeeNeeded) {
             return 1;
         }
-        stantardTokenInterface.transferFrom(msg.sender, oclpa.getServerAddress("octManager"), olServerInterface.getFee());
+
+
+        stantardTokenInterface.transferFrom(msg.sender, oclpa.getServerAddress("octManager"), nFeeNeeded);
 
         return 0;
     }
