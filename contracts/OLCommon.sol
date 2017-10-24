@@ -4,14 +4,19 @@ import "./OLSuperManager.sol";
 contract OLCommon {
 
     mapping (uint => string) errorCode;
+    uint public errorCode_success = 0;
+    uint public errorCode_feeIsNotEnough = 1;
+    uint public errorCode_parameterError = 2;
+    uint public errorCode_versionIsOld = 3;
+    uint public errorCode_noPermitAccess = 4;
 
     function OLCommonErrorCode(){
-        errorCode[0] = "success";
-        errorCode[1] = "fee is not enough";
-        errorCode[2] = "paramerer error";
-        errorCode[3] = "version is old";
-        errorCode[4] = "address is in blacklist or not in whitelist";
-        errorCode[5] = "privilege not limit";
+//        errorCode_success = "success";
+//        errorCode_feeIsNotEnough = "fee is not enough";
+//        errorCode_parameterError = "paramerer error";
+//        errorCode_versionIsOld = "version is old";
+//        errorCode_noPermitAccess = "address is in blacklist or not in whitelist";
+//        errorCode[5] = "privilege not limit";
     }
 
     function setErrorCode(uint code, string reason) public returns (uint rcode){

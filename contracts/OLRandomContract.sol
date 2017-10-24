@@ -14,7 +14,6 @@ contract OLRandomContract is OLRandomContractCallBackInterface,OLServerInterface
 
     mapping (address => uint) balance;
 
-    uint randomFee = 0.0001 * 1000000000000000000;//10^18次方;
 
     struct OneRequest {
 
@@ -50,8 +49,6 @@ contract OLRandomContract is OLRandomContractCallBackInterface,OLServerInterface
         if(nCode != 0){
             return nCode;
         }
-
-        assert(msg.value >= randomFee);
 
         OneRequest memory oneRequest;
         oneRequest.callBackAddress = callBackAddress;

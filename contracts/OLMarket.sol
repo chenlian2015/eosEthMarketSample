@@ -8,9 +8,10 @@ import "./OLServerInterface.sol";
 import "./OLBlackWhiteListInterface.sol";
 import "./StantardTokenInterface.sol";
 import "./OLFeeManagerInterface.sol";
+import "./OLCommon.sol";
 
 
-contract OLMarket is OLMarketServerInterface {
+contract OLMarket is OLMarketServerInterface,OLCommon{
 
     OLPublicAddress oclpa;
 
@@ -27,13 +28,13 @@ contract OLMarket is OLMarketServerInterface {
     function callServer(string servarName, uint versionCaller)returns (uint reason){
 
         uint nCode = preCheckServerCall(servarName, versionCaller);
-        if(nCode != 0){
+        if(nCode != errorCode_success){
             return nCode;
         }
 
         OLServerInterface olServerInterface = OLServerInterface(oclpa.getServerAddress(servarName));
         olServerInterface.callServer(msg.sender, versionCaller);
-        return 0;
+        return errorCode_success;
     }
 
     function getCurrentVersion() public returns (uint version){
