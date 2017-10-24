@@ -14,8 +14,6 @@ contract OLMarket is OLMarketServerInterface {
 
     OLPublicAddress oclpa;
 
-    uint randomFee = 0.0001 * 1000000000000000000;//10^18次方;
-
     function OCMarket(){
         oclpa = OLPublicAddress(0x8cb94b79cb4ea51e228b661cd38f81484d2632da);
     }
