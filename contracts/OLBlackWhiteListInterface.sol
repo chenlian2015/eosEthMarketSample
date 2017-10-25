@@ -2,15 +2,20 @@ pragma solidity ^0.4.15;
 
 
 contract OLBlackWhiteListInterface {
-    function addToBlackList(address addr)returns (bool){}
 
-    function addToWhiteList(address addr)returns (bool){}
+    function setContractServerBlackWhiteListType(string contractName, uint nType) public returns (uint){}
 
-    function isAddressInBlackList(address addr)returns (bool){}
+    function getContractServerBlackWhiteListType(string contractName) public returns (uint){}
 
-    function isAddressInWhiteList(address addr)returns (bool){}
+    function addToBlackList(string contractName, address addr) public returns (uint){}
 
-    function isAddrCanCallServer(address addr)returns (bool bCanCall){}
+    function addToWhiteList(string contractName, address addr) public returns (uint){}
+
+    function isAddressInBlackList(string contractName, address addr) public returns (bool){}
+
+    function isAddressInWhiteList(string contractName, address addr) public returns (bool){}
+
+    function isAddrCanCallServer(string contractName, address addr)returns (bool bCanCall){}
 
     function removeFromBlackList(string contractName, address addr) public returns (uint){}
 

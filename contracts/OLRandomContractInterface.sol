@@ -31,4 +31,6 @@ contract OLRandomContractInterface {
     @return uint ,the count of random number need to be generated
     */
     function getCurrentNeedsCount() public returns (uint){}
+
+    function nowCanProvideHash() public returns (bool){}
 }

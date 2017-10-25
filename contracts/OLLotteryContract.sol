@@ -23,8 +23,6 @@ contract OLLotteryContract is OLRandomContractInterface,OLCommon {
 
     uint oneGroupJoiners = 5;
 
-    uint randomFee = 0.0001 * 1000000000000000000;//10^18次方;
-
     OLPublicAddress oclpa;
 
     address[] lotteryJoiners;
@@ -40,7 +38,7 @@ contract OLLotteryContract is OLRandomContractInterface,OLCommon {
 
     function OCLotteryContract(){
         lotteryJoiners = new address[](oneGroupJoiners);
-        oclpa = OLPublicAddress(0x8cb94b79cb4ea51e228b661cd38f81484d2632da);
+        oclpa = OLPublicAddress(getOuLianPublicAddress());
     }
 
     function() payable {
@@ -125,7 +123,6 @@ contract OLLotteryContract is OLRandomContractInterface,OLCommon {
         msg.sender.transfer(balance[msg.sender]);
         balance[msg.sender] = 0;
     }
-
 }
 
 

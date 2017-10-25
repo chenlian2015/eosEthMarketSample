@@ -22,5 +22,5 @@ contract OLMarketServerInterface {
     precheck call server
     @return reference OLCommon.sol
     */
-    function preCheckServerCall(string servarName, uint versionCaller)public returns(uint errorCode){}
+    function preCheckAndPay(string servarName, uint versionCaller)public returns(uint errorCode){}
 }

@@ -2,13 +2,14 @@ pragma solidity ^0.4.15;
 
 import "./OLRandomContract.sol";
 import "./OLPublicAddress.sol";
+import "./OLCommon.sol";
 
-contract ThirdPartyVoter{
+contract ThirdPartyVoter is OLCommon{
 
     OLPublicAddress oclpa;
 
     function ThirdPartyVoter(){
-        oclpa = OLPublicAddress(0x8cb94b79cb4ea51e228b661cd38f81484d2632da);
+        oclpa = OLPublicAddress(getOuLianPublicAddress());
     }
 
     function() payable {

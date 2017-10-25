@@ -9,31 +9,33 @@ import "./OLServerInterface.sol";
 import "./OLMarketServerInterface.sol";
 import "./OLCommon.sol";
 
-contract OLRandomContract is OLRandomContractCallBackInterface,OLServerInterface,OLCommon{
+
+contract OLRandomContract is OLRandomContractCallBackInterface, OLServerInterface, OLCommon {
+
+    string currentContractName = "OLRandomContract";
 
     uint seedCountNeeded = 3;
 
-    mapping (address => uint) balance;
-
+    uint nNothingProvidedLable = 0;
+    uint nHashProvidedLable = 1;
+    uint nSeedProvidedLable = 2;
 
     struct OneRequest {
 
-        address callBackAddress;
+    address callBackAddress;
 
-        mapping (bytes32 => bytes32) hashSeed;
-        mapping (address => int) seedSender;
+    mapping (bytes32 => bytes32) hashSeed;
+    mapping (address => uint) senderSeedLable;
 
-        bytes32[] seedIndex;//为了遍历hashSeed
-        uint nHashGetedCount;
-        uint nSeedGetedCount;
-        OLRandomContractInterface callBack;//请求可能来自不同的服务,所以需要一个活的变量
+    bytes32[] seedIndex;//为了遍历hashSeed
+    uint nHashGetedCount;
+    uint nSeedGetedCount;
+    OLRandomContractInterface callBack;//请求可能来自不同的服务,所以需要一个活的变量
     }
 
     OneRequest[] cacheRequests;
 
     uint nCurrentIndex = 0;
-
-    uint payBackToSeedContribution = 0.00001 * 1000000000000000000;//10^18次方;
 
     function() payable {
     }
@@ -42,94 +44,85 @@ contract OLRandomContract is OLRandomContractCallBackInterface,OLServerInterface
         nCurrentIndex = 0;
     }
 
-    function requestOneUUID(address callBackAddress, uint versionCaller) public returns(uint code){
+    function requestOneUUID(address callBackAddress, uint versionCaller) public returns (uint code){
 
-        OLPublicAddress oclpa = OLPublicAddress(0x8cb94b79cb4ea51e228b661cd38f81484d2632da);
-        OLMarketServerInterface olMarketServerInterface = OLMarketServerInterface(oclpa.getServerAddress("OLMarket"));
-        uint nCode = olMarketServerInterface.preCheckServerCall("OLRandomContract", versionCaller);
-        if(nCode != 0){
+        OLPublicAddress oclpa = OLPublicAddress(getOuLianPublicAddress());
+        OLMarketServerInterface olMarketServerInterface = OLMarketServerInterface(oclpa.getServerAddress(marketName));
+        uint nCode = olMarketServerInterface.preCheckAndPay(currentContractName, versionCaller);
+        if (nCode != errorCode_success) {
             return nCode;
         }
 
-        OneRequest memory oneRequest;
-        oneRequest.callBackAddress = callBackAddress;
-        oneRequest.nHashGetedCount = 0;
-        cacheRequests.push(oneRequest);
-
-        balance[msg.sender] += msg.value;
+        addOneRequest(callBackAddress);
         return errorCode_success;
     }
 
     function callServer(address callFrom, uint versionCaller) public returns (bool){
-        OLPublicAddress oclpa = OLPublicAddress(0x8cb94b79cb4ea51e228b661cd38f81484d2632da);
-        if(msg.sender == oclpa.getServerAddress("OLMarket")){
-            requestOneUUID(callFrom, versionCaller);
+        OLPublicAddress oclpa = OLPublicAddress(getOuLianPublicAddress());
+        if (msg.sender == oclpa.getServerAddress(marketName)) {
+            addOneRequest(callFrom);
         }
     }
 
-    function sendOnlyHash(bytes32 hash) public {
+    function addOneRequest(address addr)private{
+        OneRequest memory oneRequest;
+        oneRequest.callBackAddress = addr;
+        oneRequest.nHashGetedCount = 0;
+        cacheRequests.push(oneRequest);
+    }
 
-        if (getCurrentNeedsCount() > 0) {
-            assert(getCurrentNeedsCount() > 0);
-        }
-        else {
-            return;
+    function sendOnlyHash(bytes32 hash) public returns(uint){
+
+        if (getCurrentNeedsCount() <= 0) {
+            return errorCode_noHashSeedNeeded;
         }
 
         //一个人，针对一个请求，只能投一次票
-        assert(cacheRequests[nCurrentIndex].seedSender[msg.sender] != 1);
-        cacheRequests[nCurrentIndex].seedSender[msg.sender] = 1;
+        if (cacheRequests[nCurrentIndex].senderSeedLable[msg.sender] == nHashProvidedLable) {
+            return errorCode_hashSeedProvided;
+        }
 
+        cacheRequests[nCurrentIndex].senderSeedLable[msg.sender] = nHashProvidedLable;
 
-        if (cacheRequests[nCurrentIndex].hashSeed[hash] != 1) {
-            assert(cacheRequests[nCurrentIndex].hashSeed[hash] != 1);
-            cacheRequests[nCurrentIndex].hashSeed[hash] = 1;
+        if (cacheRequests[nCurrentIndex].hashSeed[hash] != nHashProvidedLable) {
+            cacheRequests[nCurrentIndex].hashSeed[hash] = nHashProvidedLable;
             cacheRequests[nCurrentIndex].nHashGetedCount++;
         }
         else {
-            return;
+            return errorCode_hashSeedProvided;
         }
+        return errorCode_success;
     }
 
-    function ever() public returns (bool){
+    function nowCanProvideHash() public returns(bool){
         if (getCurrentNeedsCount() > 0) {
-            return (cacheRequests[nCurrentIndex].seedSender[msg.sender] != 1);
+            return (cacheRequests[nCurrentIndex].senderSeedLable[msg.sender] != nHashProvidedLable);
         }
         else {
             return false;
         }
     }
 
-    function sendSeedAndHash(bytes32 seed, bytes32 hash) public payable {
+    function sendSeedAndHash(bytes32 seed, bytes32 hash) public returns(uint) {
 
-        if (getCurrentNeedsCount() > 0) {
-            assert(getCurrentNeedsCount() > 0);
-        }
-        else {
-            return;
+        if (getCurrentNeedsCount() <= 0) {
+            return errorCode_noHashSeedNeeded;
         }
 
-        if (cacheRequests[nCurrentIndex].nHashGetedCount >= seedCountNeeded) {
-            assert(cacheRequests[nCurrentIndex].nHashGetedCount >= seedCountNeeded);
-        }
-        else {
-            return;
+        if (cacheRequests[nCurrentIndex].nHashGetedCount < seedCountNeeded) {
+            return errorCode_hashSeedCountNotEnough;
         }
 
-        if (hash == keccak256(seed)) {
-            assert(hash == keccak256(seed));
+
+        if (hash != keccak256(seed)) {
+            return errorCode_hashSeedNotPair;
         }
-        else {
-            return;
-        }
+
 
         if (cacheRequests[nCurrentIndex].hashSeed[hash] == 1) {
-            assert(cacheRequests[nCurrentIndex].hashSeed[hash] == 1);
-            //表示没有初始化过
+           return  errorCode_seedProvided;
         }
-        else {
-            return;
-        }
+
 
         cacheRequests[nCurrentIndex].hashSeed[hash] = seed;
         cacheRequests[nCurrentIndex].seedIndex.push(hash);

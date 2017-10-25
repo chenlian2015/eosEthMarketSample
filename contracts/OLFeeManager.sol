@@ -8,7 +8,7 @@ contract OLFeeManager is OLFeeManagerInterface,OLCommon{
     mapping (string => uint)  feeSetting;
 
     function setFee(string serverName, uint fee)public returns (uint){
-        OLSuperManager olSuperManager = OLSuperManager(0x8ae305bda0ec07c8a38ff7bf4a85f85654591f5b);
+        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerAddress());
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLFeeManager")) {
             return errorCode_noPermitAccess;
         }
