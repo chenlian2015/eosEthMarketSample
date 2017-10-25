@@ -1,7 +1,7 @@
 pragma solidity ^0.4.15;
+import "./OLCommon.sol";
 
-
-contract OLSuperManager {
+contract OLSuperManager is OLCommon{
 
     address private superManager;
 
@@ -14,17 +14,17 @@ contract OLSuperManager {
     function setUserServerPermission(address user, string server) public returns (uint){
 
         if (msg.sender != superManager) {
-            return 5;
+            return errorCode_noPermitAccess;
         }
 
         permissionUserToServer[server][user] = true;
-        return 0;
+        return errorCode_success;
     }
 
     function removePermission(address user, string server) public returns (uint){
 
         if (msg.sender != superManager) {
-            return 5;
+            return errorCode_noPermitAccess;
         }
         permissionUserToServer[server][user] = false;
     }

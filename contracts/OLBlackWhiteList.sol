@@ -4,7 +4,7 @@ pragma solidity ^0.4.15;
 import "./OLSuperManager.sol";
 
 
-contract OLBlackWhiteList {
+contract OLBlackWhiteList is OLCommon{
     uint private notinuse = 2;
 
     uint private inuse = 1;
@@ -46,7 +46,7 @@ contract OLBlackWhiteList {
         OLSuperManager olSuperManager = OLSuperManager(0x8ae305bda0ec07c8a38ff7bf4a85f85654591f5b);
 
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLBlackWhiteList")) {
-            return 5;
+            return errorCode_noPermitAccess;
         }
 
         blackWhiteListType[contractName] = nType;
@@ -60,7 +60,7 @@ contract OLBlackWhiteList {
         OLSuperManager olSuperManager = OLSuperManager(0x8ae305bda0ec07c8a38ff7bf4a85f85654591f5b);
 
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLBlackWhiteList")) {
-            return 5;
+            return errorCode_noPermitAccess;
         }
         whiteList[contractName][addr] = inuse;
     }
@@ -69,7 +69,7 @@ contract OLBlackWhiteList {
         OLSuperManager olSuperManager = OLSuperManager(0x8ae305bda0ec07c8a38ff7bf4a85f85654591f5b);
 
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLBlackWhiteList")) {
-            return 5;
+            return errorCode_noPermitAccess;
         }
         whiteList[contractName][addr] = notinuse;
     }
@@ -78,7 +78,7 @@ contract OLBlackWhiteList {
         OLSuperManager olSuperManager = OLSuperManager(0x8ae305bda0ec07c8a38ff7bf4a85f85654591f5b);
 
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLBlackWhiteList")) {
-            return 5;
+            return errorCode_noPermitAccess;
         }
         blackList[contractName][addr] = inuse;
     }
@@ -87,7 +87,7 @@ contract OLBlackWhiteList {
         OLSuperManager olSuperManager = OLSuperManager(0x8ae305bda0ec07c8a38ff7bf4a85f85654591f5b);
 
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLBlackWhiteList")) {
-            return 5;
+            return errorCode_noPermitAccess;
         }
         blackList[contractName][addr] = notinuse;
     }

@@ -1,7 +1,7 @@
 pragma solidity ^0.4.15;
 import "./OLSuperManager.sol";
-
-contract OLPublicAddress {
+import "./OLCommon.sol";
+contract OLPublicAddress is OLCommon{
 
     mapping (string => address) serverAddress;
 
@@ -17,16 +17,16 @@ contract OLPublicAddress {
         OLSuperManager olSuperManager = OLSuperManager(0x8ae305bda0ec07c8a38ff7bf4a85f85654591f5b);
 
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLPublicAddress")) {
-            5;
+            return errorCode_success;
         }
 
         serverAddress[contractName] = contractAddress;
 
         if (fee < 0) {
-            return 2;
+            return errorCode_parameterError;
         }
         serverFee[contractName] = fee;
-        return 0;
+        return errorCode_success;
     }
 
     function getServerAddress(string contractName) public returns (address){
@@ -41,13 +41,13 @@ contract OLPublicAddress {
         OLSuperManager olSuperManager = OLSuperManager(0x8ae305bda0ec07c8a38ff7bf4a85f85654591f5b);
 
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLPublicAddress")) {
-            5;
+            return errorCode_success;
         }
 
         if (fee < 0) {
-            return 2;
+            return errorCode_parameterError;
         }
         serverFee[contractName] = fee;
-        return 0;
+        return errorCode_success;
     }
 }

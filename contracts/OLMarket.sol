@@ -44,12 +44,12 @@ contract OLMarket is OLMarketServerInterface,OLCommon{
     function preCheckServerCall(string servarName, uint versionCaller) public returns (uint errorCode){
         OLServerInterface olServerInterface = OLServerInterface(oclpa.getServerAddress(servarName));
         if (versionCaller != getCurrentVersion()) {
-            return 3;
+            return errorCode_versionIsOld;
         }
 
         OLBlackWhiteListInterface olBlackWhiteListInterface = OLBlackWhiteListInterface(oclpa.getServerAddress(servarName));
         if (!olBlackWhiteListInterface.isAddrCanCallServer(msg.sender)) {
-            return 4;
+            return errorCode_noPermitAccess;
         }
 
         StantardTokenInterface stantardTokenInterface = StantardTokenInterface(oclpa.getServerAddress("OracleChainToken"));
@@ -58,12 +58,12 @@ contract OLMarket is OLMarketServerInterface,OLCommon{
         OLFeeManagerInterface olFeeManagerInterface = OLFeeManagerInterface(oclpa.getServerAddress("OLFeeManager"));
         uint nFeeNeeded = olFeeManagerInterface.getFee(servarName);
         if (n < nFeeNeeded) {
-            return 1;
+            return errorCode_feeIsNotEnough;
         }
 
 
         stantardTokenInterface.transferFrom(msg.sender, oclpa.getServerAddress("octManager"), nFeeNeeded);
 
-        return 0;
+        return errorCode_success;
     }
 }

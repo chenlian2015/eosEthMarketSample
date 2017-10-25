@@ -7,8 +7,9 @@ import "./OLRandomContractInterface.sol";
 import "./OLPublicAddress.sol";
 import "./OLServerInterface.sol";
 import "./OLMarketServerInterface.sol";
+import "./OLCommon.sol";
 
-contract OLRandomContract is OLRandomContractCallBackInterface,OLServerInterface{
+contract OLRandomContract is OLRandomContractCallBackInterface,OLServerInterface,OLCommon{
 
     uint seedCountNeeded = 3;
 
@@ -56,7 +57,7 @@ contract OLRandomContract is OLRandomContractCallBackInterface,OLServerInterface
         cacheRequests.push(oneRequest);
 
         balance[msg.sender] += msg.value;
-        return 0;
+        return errorCode_success;
     }
 
     function callServer(address callFrom, uint versionCaller) public returns (bool){

@@ -4,9 +4,9 @@ pragma solidity ^0.4.15;
 import "./OLRandomContractInterface.sol";
 import "./OLMarket.sol";
 import "./OLPublicAddress.sol";
+import "./OLCommon.sol";
 
-
-contract OLLotteryContract is OLRandomContractInterface {
+contract OLLotteryContract is OLRandomContractInterface,OLCommon {
 
 
     struct JoinersGroup {
@@ -85,7 +85,12 @@ contract OLLotteryContract is OLRandomContractInterface {
     }
 
 
-    function callBackForRequestRandom(bytes32 uuidRequest, bytes32 randomValue){
+    function callBackForRequestRandom(bytes32 uuidRequest, bytes32 randomValue)public returns(uint){
+
+        if(msg.sender != oclpa.getServerAddress("OLRandomContract")){
+            return errorCode_noPermitAccess;
+        }
+
         uint nIndexFirstPrize = uint(randomValue[0]) % oneGroupJoiners;
         mapJoinersGroup[uuidRequest].prizerOne = mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize];
 
