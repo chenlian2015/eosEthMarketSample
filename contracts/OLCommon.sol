@@ -35,6 +35,7 @@ contract OLCommon {
     */
     uint constant serverStatusFreezed = 0;
     uint constant serverStatusNormal = 1;
+    uint constant serverStatusRemoved = 2;
 
     /*
     addr weather or not work in white or black list

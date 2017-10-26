@@ -10,7 +10,6 @@ import "./StantardTokenInterface.sol";
 import "./OLFeeManagerInterface.sol";
 import "./OLCommon.sol";
 
-
 contract OLMarket is OLMarketServerInterface,OLCommon{
 
     OLPublicAddress oclpa;
@@ -34,10 +33,6 @@ contract OLMarket is OLMarketServerInterface,OLCommon{
         OLServerInterface olServerInterface = OLServerInterface(oclpa.getServerAddress(servarName));
         olServerInterface.callServer(msg.sender, versionCaller);
         return errorCode_success;
-    }
-
-    function getCurrentVersion() public returns (uint version){
-        return 1;
     }
 
     function preCheckAndPay(string servarName, uint versionCaller) public returns (uint errorCode){

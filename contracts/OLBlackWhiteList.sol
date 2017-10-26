@@ -7,12 +7,12 @@ import "./OLCommon.sol";
 
 contract OLBlackWhiteList is OLCommon,OLBlackWhiteListInterface{
 
-    mapping (string => mapping (address => uint)) whiteList;
+    mapping  (string => mapping (address => uint))  private whiteList;
 
-    mapping (string => mapping (address => uint)) blackList;
+    mapping  (string => mapping (address => uint))  private blackList;
 
 
-    function isAddrCanCallServer(string contractName, address addr)returns (bool bCanCall){
+    function isAddrCanCallServer(string contractName, address addr)public returns (bool bCanCall){
         uint nType = blackWhiteListType[contractName];
         if (nType == notCheck) {
             return true;
@@ -30,7 +30,7 @@ contract OLBlackWhiteList is OLCommon,OLBlackWhiteListInterface{
         }
     }
 
-    mapping (string=>uint) blackWhiteListType;
+    mapping (string=>uint) private blackWhiteListType;
 
     function setContractServerBlackWhiteListType(string contractName, uint nType)public returns (uint){
         OLSuperManager olSuperManager = OLSuperManager(getSuperManagerAddress());

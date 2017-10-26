@@ -12,6 +12,8 @@ contract OLRandomContractCallBackInterface {
 
     uint constant public errorCode_seedProvided = 205;
 
+    uint constant public errorCode_hashNotProvided = 206;
+
 
     /*
     @param randomValue,a random number send back to random request

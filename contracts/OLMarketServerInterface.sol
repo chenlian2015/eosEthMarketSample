@@ -14,13 +14,12 @@ contract OLMarketServerInterface {
     function getFee(string servarName) public returns (uint){}
 
     /*
-    @return get the current version of this server
-    */
-    function getCurrentVersion() public returns (uint version){}
-
-    /*
     precheck call server
     @return reference OLCommon.sol
     */
     function preCheckAndPay(string servarName, uint versionCaller)public returns(uint errorCode){}
+
+    function getCurrentVersion() public returns (uint version){
+        return 1;
+    }
 }

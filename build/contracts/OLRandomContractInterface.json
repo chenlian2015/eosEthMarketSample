@@ -7,11 +7,33 @@
         {
           "name": "callBackAddress",
           "type": "address"
+        },
+        {
+          "name": "versionCaller",
+          "type": "uint256"
         }
       ],
       "name": "requestOneUUID",
-      "outputs": [],
-      "payable": true,
+      "outputs": [
+        {
+          "name": "code",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "nowCanProvideHash",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
       "type": "function"
     },
     {
@@ -27,8 +49,13 @@
         }
       ],
       "name": "sendSeedAndHash",
-      "outputs": [],
-      "payable": true,
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
       "type": "function"
     },
     {
@@ -40,7 +67,12 @@
         }
       ],
       "name": "sendOnlyHash",
-      "outputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
       "payable": false,
       "type": "function"
     },
@@ -56,23 +88,10 @@
       ],
       "payable": false,
       "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [],
-      "name": "currentStatus",
-      "outputs": [
-        {
-          "name": "hasChanceToProvideSeedHash",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "type": "function"
     }
   ],
-  "unlinked_binary": "0x6060604052341561000f57600080fd5b5b6101458061001f6000396000f300606060405263ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663453b9a4a8114610069578063a0d1de291461008c578063dd2407d31461009c578063e455d26c146100b4578063ef8a9235146100d9575b600080fd5b61008a73ffffffffffffffffffffffffffffffffffffffff60043516610100565b005b61008a600435602435610104565b005b34156100a757600080fd5b61008a600435610100565b005b34156100bf57600080fd5b6100c761010d565b60405190815260200160405180910390f35b34156100e457600080fd5b6100ec61010d565b604051901515815260200160405180910390f35b5b50565b5b5050565b5b50565b60005b90565b60005b905600a165627a7a72305820178af47819209da2ba6988cc85bca7bb210c2d4759d73fc68d74c063ede796540029",
+  "unlinked_binary": "0x6060604052341561000f57600080fd5b5b61019b8061001f6000396000f300606060405263ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663237a4a7f81146100695780639da0c7b1146100aa578063a0d1de29146100d1578063dd2407d3146100fc578063e455d26c14610124575b600080fd5b341561007457600080fd5b61009873ffffffffffffffffffffffffffffffffffffffff60043516602435610149565b60405190815260200160405180910390f35b34156100b557600080fd5b6100bd610152565b604051901515815260200160405180910390f35b34156100dc57600080fd5b610098600435602435610149565b60405190815260200160405180910390f35b341561010757600080fd5b610098600435610161565b60405190815260200160405180910390f35b341561012f57600080fd5b610098610152565b60405190815260200160405180910390f35b60005b92915050565b60005b90565b60005b92915050565b60005b919050565b60005b905600a165627a7a723058200bf96ddb520f4a34f52603a6a1a6c40347ba2b5bf98bfcc05b6481ccb02628230029",
   "networks": {},
   "schema_version": "0.0.5",
-  "updated_at": 1508900878420
+  "updated_at": 1509012279146
 }

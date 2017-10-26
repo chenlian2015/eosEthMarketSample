@@ -5,19 +5,16 @@ import "./OLPublicAddressInterface.sol";
 
 contract OLPublicAddress is OLCommon,OLPublicAddressInterface{
 
-    mapping (string => address) serverAddress;
+    mapping(string => address) private serverAddress;
 
-    mapping (string => uint) serverFee;//服务费
-
-
-    mapping (string => uint) serverStatus;//服务状态
+    mapping(string => uint) private serverStatus;//服务状态
 
     /*
     如果要删除一个服务，则contractAddress设置值为0即可
     if you want to delete one contractName,just set contractAddress=0
     @param fee,means the fee you need to provide to call this server
     */
-    function putServerAddress(string contractName, address contractAddress, uint fee, uint serverStatusPar) public returns (uint) {
+    function putServerAddress(string contractName, address contractAddress, uint serverStatusPar) public returns (uint) {
 
         OLSuperManager olSuperManager = OLSuperManager(getSuperManagerAddress());
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLPublicAddress")) {
@@ -27,10 +24,6 @@ contract OLPublicAddress is OLCommon,OLPublicAddressInterface{
         serverAddress[contractName] = contractAddress;
         serverStatus[contractName] = serverStatusPar;
 
-        if (fee < 0) {
-            return errorCode_parameterError;
-        }
-        serverFee[contractName] = fee;
         return errorCode_success;
     }
 
@@ -40,22 +33,10 @@ contract OLPublicAddress is OLCommon,OLPublicAddressInterface{
             return errorCode_noPermitAccess;
         }
         serverAddress[contractName] = address(0x0);
+        serverStatus[contractName] = serverStatusRemoved;
     }
 
-    function setServerFee(string contractName, uint fee) public returns (uint){
-        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerAddress());
-        if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLPublicAddress")) {
-            return errorCode_success;
-        }
-
-        if (fee < 0) {
-            return errorCode_parameterError;
-        }
-        serverFee[contractName] = fee;
-        return errorCode_success;
-    }
-
-    function serServerStatus(string contractName, uint serverStatusPar)public returns(uint){
+    function setServerStatus(string contractName, uint serverStatusPar)public returns(uint){
         OLSuperManager olSuperManager = OLSuperManager(getSuperManagerAddress());
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLPublicAddress")) {
             return errorCode_noPermitAccess;
@@ -70,12 +51,10 @@ contract OLPublicAddress is OLCommon,OLPublicAddressInterface{
     }
 
     function getServerAddress(string contractName) public returns (address){
+
+        if(getServerStatus(contractName) != serverStatusNormal){
+            return address(0x0);
+        }
         return serverAddress[contractName];
     }
-
-    function getFee(string contractName) public returns (uint){
-        return serverFee[contractName];
-    }
-
-
 }

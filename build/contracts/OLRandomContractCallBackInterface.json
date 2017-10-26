@@ -2,6 +2,71 @@
   "contract_name": "OLRandomContractCallBackInterface",
   "abi": [
     {
+      "constant": true,
+      "inputs": [],
+      "name": "errorCode_hashSeedProvided",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "errorCode_noHashSeedNeeded",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "errorCode_seedProvided",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "errorCode_hashNotProvided",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "errorCode_hashSeedNotPair",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
       "constant": false,
       "inputs": [
         {
@@ -13,10 +78,23 @@
       "outputs": [],
       "payable": false,
       "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "errorCode_hashSeedCountNotEnough",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
     }
   ],
-  "unlinked_binary": "0x60606040523415600e57600080fd5b5b60818061001d6000396000f300606060405263ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663afa437c08114603c575b600080fd5b3415604657600080fd5b604f6004356051565b005b5b505600a165627a7a72305820e602b160bb707203c6a50866b13e2f2f79f6a49da35cc6796d5dcfc358feb3510029",
+  "unlinked_binary": "0x6060604052341561000f57600080fd5b5b6101c98061001f6000396000f300606060405236156100805763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416633242190d81146100855780634eac0d5d146100aa5780637bd5a4c5146100cf5780638515a31a146100f45780638845b0d714610119578063afa437c01461013e578063ff9062be14610156575b600080fd5b341561009057600080fd5b61009861017b565b60405190815260200160405180910390f35b34156100b557600080fd5b610098610180565b60405190815260200160405180910390f35b34156100da57600080fd5b610098610185565b60405190815260200160405180910390f35b34156100ff57600080fd5b61009861018a565b60405190815260200160405180910390f35b341561012457600080fd5b61009861018f565b60405190815260200160405180910390f35b341561014957600080fd5b610154600435610194565b005b341561016157600080fd5b610098610198565b60405190815260200160405180910390f35b60ca81565b60c981565b60cd81565b60ce81565b60cc81565b5b50565b60cb815600a165627a7a7230582045510dda0f64ad5100e103683d31c24ebb0ba333af006b3c9bbc05f49c8aaa600029",
   "networks": {},
   "schema_version": "0.0.5",
-  "updated_at": 1508900878420
+  "updated_at": 1509012279146
 }

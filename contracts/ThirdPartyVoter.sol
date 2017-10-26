@@ -32,4 +32,5 @@ contract ThirdPartyVoter is OLCommon{
         OLRandomContract ocRandomServer = OLRandomContract(oclpa.getServerAddress("OLRandomContract"));
         ocRandomServer.sendSeedAndHash(keccak256(seed), keccak256(keccak256(seed)));
     }
+
 }
