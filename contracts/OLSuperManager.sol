@@ -1,7 +1,7 @@
 pragma solidity ^0.4.15;
-import "./OLCommon.sol";
+import "./OLCommonConfigure.sol";
 
-contract OLSuperManager is OLCommon{
+contract OLSuperManager is OLCommonConfigure {
 
     address private superManager;
 
@@ -27,6 +27,7 @@ contract OLSuperManager is OLCommon{
             return errorCode_noPermitAccess;
         }
         permissionUserToServer[server][user] = false;
+        return errorCode_success;
     }
 
     function isUserHasPermissonToModify(address user, string server) public returns (bool){

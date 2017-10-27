@@ -3,9 +3,10 @@ pragma solidity ^0.4.15;
 
 import "./OLFeeManagerInterface.sol";
 import "./OLSuperManager.sol";
+import "./OLCommonCall.sol";
+import "./OLAddressSuperManager.sol";
 
-
-contract OLFeeManager is OLFeeManagerInterface, OLCommon {
+contract OLFeeManager is OLFeeManagerInterface,OLAddressSuperManager,OLCommonCall, OLCommonConfigure {
 
     mapping (string => uint)  private feeSetting;
 

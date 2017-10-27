@@ -9,7 +9,7 @@ contract OLFeeManagerInterface {
     only who has permission can call setFee
     @param serverName
     @param fee, the fee of serverName, with uint moct
-    @return 0 success, or other error code reference OLCommon.sol
+    @return 0 success, or other error code reference OLCommonConfigure.sol
     */
     function setFee(string serverName, uint fee)public returns (uint){}
 

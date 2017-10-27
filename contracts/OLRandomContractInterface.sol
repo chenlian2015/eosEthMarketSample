@@ -1,7 +1,8 @@
 pragma solidity ^0.4.15;
 
+import "./OLServerInterface.sol";
 
-contract OLRandomContractInterface {
+contract OLRandomContractInterface is OLServerInterface{
 
     /*
     one random number perhaps applied to multi requests

@@ -1,0 +1,165 @@
+{
+  "contract_name": "OLCommonConfigure",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "errorCode_hashSeedProvided",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "errorCode_noHashSeedNeeded",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "errorCode_seedProvided",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "errorCode_noPermitAccess",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "errorCode_hashNotProvided",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "errorCode_hashSeedNotPair",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "errorCode_success",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "errorCode_parameterError",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "errorCode_versionIsOld",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "errorCode_feeIsNotEnough",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "errorCode_serverIsFreezed",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "errorCode_hashSeedCountNotEnough",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    }
+  ],
+  "unlinked_binary": "0x60606040526001600055600260015560036002556000600355341561002357600080fd5b5b6102e0806100336000396000f300606060405236156100b75763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416633242190d81146100bc5780634eac0d5d146100e15780637bd5a4c5146101065780637d3099cc1461012b5780638515a31a146101505780638845b0d714610175578063b014afca1461019a578063bc88bda8146101bf578063de23ffdf146101e4578063deab7f7414610209578063e24c07e71461022e578063ff9062be14610253575b600080fd5b34156100c757600080fd5b6100cf610278565b60405190815260200160405180910390f35b34156100ec57600080fd5b6100cf61027d565b60405190815260200160405180910390f35b341561011157600080fd5b6100cf610282565b60405190815260200160405180910390f35b341561013657600080fd5b6100cf610287565b60405190815260200160405180910390f35b341561015b57600080fd5b6100cf61028c565b60405190815260200160405180910390f35b341561018057600080fd5b6100cf610291565b60405190815260200160405180910390f35b34156101a557600080fd5b6100cf610296565b60405190815260200160405180910390f35b34156101ca57600080fd5b6100cf61029b565b60405190815260200160405180910390f35b34156101ef57600080fd5b6100cf6102a0565b60405190815260200160405180910390f35b341561021457600080fd5b6100cf6102a5565b60405190815260200160405180910390f35b341561023957600080fd5b6100cf6102aa565b60405190815260200160405180910390f35b341561025e57600080fd5b6100cf6102af565b60405190815260200160405180910390f35b60ca81565b60c981565b60cd81565b600481565b60ce81565b60cc81565b600081565b600281565b600381565b600181565b600581565b60cb815600a165627a7a72305820362b9fcf8c8e633c7dbcff577e67e2645dbdced8bb713139b4258028f37709c30029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1509088982220
+}

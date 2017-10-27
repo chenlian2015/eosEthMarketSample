@@ -1,9 +1,11 @@
 pragma solidity ^0.4.15;
-import "./OLSuperManager.sol";
-import "./OLCommon.sol";
-import "./OLPublicAddressInterface.sol";
 
-contract OLPublicAddress is OLCommon,OLPublicAddressInterface{
+import "./OLSuperManager.sol";
+import "./OLCommonConfigure.sol";
+import "./OLPublicAddressInterface.sol";
+import "./OLAddressSuperManager.sol";
+
+contract OLPublicAddress is OLCommonConfigure,OLAddressSuperManager,OLPublicAddressInterface{
 
     mapping(string => address) private serverAddress;
 

@@ -3,9 +3,21 @@ pragma solidity ^0.4.15;
 import "./OLTestSynataxBB.sol";
 contract OLTestSynatax{
 
-    mapping(uint=>bytes32) x;
+    string [] name;
 
-    function test() private returns(bool){
-        return x[1]==bytes32(0x0);
+    function add(string namePar) public{
+        name.push(namePar);
+    }
+
+    function length()public returns(uint){
+        return name.length;
+    }
+
+    function clear() public {
+        delete name;
+    }
+
+    function getAt(uint nIndex) returns(string){
+        return name[nIndex];
     }
 }

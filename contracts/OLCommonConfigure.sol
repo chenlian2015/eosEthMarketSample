@@ -3,8 +3,7 @@ pragma solidity ^0.4.15;
 
 import "./OLSuperManager.sol";
 
-
-contract OLCommon {
+contract OLCommonConfigure {
     /*
     global error code on OuLianMarket
     */
@@ -19,16 +18,22 @@ contract OLCommon {
     uint constant public errorCode_noPermitAccess = 4;
 
     uint constant public errorCode_serverIsFreezed = 5;
-    /*
-    global constant address of constant constract
-    */
-    function getSuperManagerAddress()public returns(address){
-        return address(0x8ae305bda0ec07c8a38ff7bf4a85f85654591f5b);
-    }
 
-    function getOuLianPublicAddress()public returns(address){
-        return address(0x8ae305bda0ec07c8a38ff7bf4a85f85654591f5b);
-    }
+
+    /*
+    random contract
+    */
+    uint constant public errorCode_noHashSeedNeeded = 201;
+
+    uint constant public errorCode_hashSeedProvided = 202;
+
+    uint constant public errorCode_hashSeedCountNotEnough = 203;
+
+    uint constant public errorCode_hashSeedNotPair = 204;
+
+    uint constant public errorCode_seedProvided = 205;
+
+    uint constant public errorCode_hashNotProvided = 206;
 
     /*
     server status on OuLianMarket
@@ -43,7 +48,6 @@ contract OLCommon {
     uint constant  notinuse = 2;
     uint constant  inuse = 1;
 
-
     /*
     contrant white or black list check way
     */
@@ -51,6 +55,4 @@ contract OLCommon {
     uint onlyCheckNotInBlackList = 2;
     uint checkWhiteAndBlackList = 3;
     uint notCheck = 0;
-
-    string public constant marketName = "OLMarket";
 }

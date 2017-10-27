@@ -8,9 +8,12 @@ import "./OLServerInterface.sol";
 import "./OLBlackWhiteListInterface.sol";
 import "./StantardTokenInterface.sol";
 import "./OLFeeManagerInterface.sol";
-import "./OLCommon.sol";
+import "./OLCommonConfigure.sol";
+import "./OLAddressSuperManager.sol";
+import "./OLCommonCall.sol";
+import "./OLAddressPublicAddressManager.sol";
 
-contract OLMarket is OLMarketServerInterface,OLCommon{
+contract OLMarket is OLMarketServerInterface,OLAddressSuperManager,OLCommonCall, OLCommonConfigure,OLAddressPublicAddressManager {
 
     OLPublicAddress oclpa;
 
@@ -63,4 +66,5 @@ contract OLMarket is OLMarketServerInterface,OLCommon{
         stantardTokenInterface.transferFrom(msg.sender, oclpa.getServerAddress("octManager"), nFeeNeeded);
         return errorCode_success;
     }
+
 }

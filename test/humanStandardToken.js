@@ -17,11 +17,22 @@ contract('OLTestSynatax', function (accounts) {
     /*步骤2--start---
      将各个合约地址注册到OLPublicAddress中
     */
-    var olTestSynatax = OLTestSynatax.at('0xd2b38982a7eda7826d87fa72f9094ce3c1e156c4');
+    var olTestSynatax = OLTestSynatax.at('0x76cd3b05b7aeb3b4abf6ebc5689e4c21608066b3');
 
-    olTestSynatax.test.call().then(function (result) {
+
+    olTestSynatax.clear();
+    olTestSynatax.add("jiang");
+    olTestSynatax.add("hai");
+
+    olTestSynatax.length.call().then(function (result) {
         console.log(result);
     });
+
+    olTestSynatax.getAt.call(0).then(function (result) {
+        console.log(result);
+    });
+
+
     return;
     var OLPublicAddressAbstraction = OLPublicAddress.at('0x8cb94b79cb4ea51e228b661cd38f81484d2632da')
     var addrOCLotteryContract = '0x8ae305bda0ec07c8a38ff7bf4a85f85654591f5b'

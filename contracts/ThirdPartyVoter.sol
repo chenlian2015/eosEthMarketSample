@@ -1,27 +1,20 @@
 pragma solidity ^0.4.15;
 
+
 import "./OLRandomContract.sol";
 import "./OLPublicAddress.sol";
-import "./OLCommon.sol";
+import "./OLCommonConfigure.sol";
+import "./OLCommonCall.sol";
+import "./OLAddressPublicAddressManager.sol";
 
-contract ThirdPartyVoter is OLCommon{
+
+contract ThirdPartyVoter is OLCommonCall, OLCommonConfigure, OLAddressPublicAddressManager {
 
     OLPublicAddress oclpa;
 
     function ThirdPartyVoter(){
         oclpa = OLPublicAddress(getOuLianPublicAddress());
     }
-
-    function() payable {
-    }
-
-    function withDraw()public payable{
-    }
-
-//    function withDrawToMyAccount()public payable{
-////        OLRandomContract ocRandomServer = OLRandomContract(oclpa.getServerAddress("OLRandomContract"));
-////        ocRandomServer.withDrawToMyAccount();
-//    }
 
     function sendOnlyHash(string seed){
         OLRandomContract ocRandomServer = OLRandomContract(oclpa.getServerAddress("OLRandomContract"));

@@ -7,10 +7,11 @@ import "./OLRandomContractInterface.sol";
 import "./OLPublicAddress.sol";
 import "./OLServerInterface.sol";
 import "./OLMarketServerInterface.sol";
-import "./OLCommon.sol";
+import "./OLCommonConfigure.sol";
+import "./OLCommonCall.sol";
+import "./OLAddressPublicAddressManager.sol";
 
-
-contract OLRandomContract is OLRandomContractCallBackInterface, OLServerInterface, OLCommon, OLRandomContractInterface {
+contract OLRandomContract is OLCommonCall,OLCommonConfigure, OLRandomContractInterface,OLAddressPublicAddressManager{
 
     string currentContractName = "OLRandomContract";
 

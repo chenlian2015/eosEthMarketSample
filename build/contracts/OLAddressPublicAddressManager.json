@@ -1,0 +1,22 @@
+{
+  "contract_name": "OLAddressPublicAddressManager",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "getOuLianPublicAddress",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    }
+  ],
+  "unlinked_binary": "0x6060604052341561000f57600080fd5b5b60ba8061001e6000396000f300606060405263ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663345393f08114603c575b600080fd5b3415604657600080fd5b604c6075565b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200160405180910390f35b738ae305bda0ec07c8a38ff7bf4a85f85654591f5b5b905600a165627a7a7230582094d177d7db9e5e6cbb0886b48889d88c200deaf70c31576f2750be454f5c28d90029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1509088982218
+}

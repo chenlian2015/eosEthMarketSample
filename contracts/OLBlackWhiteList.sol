@@ -3,9 +3,11 @@ pragma solidity ^0.4.15;
 
 import "./OLSuperManager.sol";
 import "./OLBlackWhiteListInterface.sol";
-import "./OLCommon.sol";
+import "./OLCommonConfigure.sol";
+import "./OLCommonCall.sol";
+import "./OLAddressSuperManager.sol";
 
-contract OLBlackWhiteList is OLCommon,OLBlackWhiteListInterface{
+contract OLBlackWhiteList is OLCommonConfigure,OLAddressSuperManager,OLCommonCall,OLBlackWhiteListInterface{
 
     mapping  (string => mapping (address => uint))  private whiteList;
 
