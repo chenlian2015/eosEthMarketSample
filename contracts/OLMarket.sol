@@ -15,9 +15,10 @@ import "./OLAddressPublicAddressManager.sol";
 import "./OLSuperManager.sol";
 
 
-contract OLMarket is OLMarketServerInterface, OLAddressSuperManager, OLCommonCall, OLCommonConfigure, OLAddressPublicAddressManager {
+contract OLMarket is OLMarketServerInterface, OLAddressSuperManager, OLCommonCall, OLCommonConfigure {
 
     OLPublicAddress oclpa;
+    string private constant TAG = "OLMarket";
 
     function OCMarket(){
         oclpa = OLPublicAddress(getOuLianPublicAddress());
@@ -34,18 +35,22 @@ contract OLMarket is OLMarketServerInterface, OLAddressSuperManager, OLCommonCal
         if (nCode != errorCode_success) {
             return nCode;
         }
+        addLog(TAG, "5");
 
         OLServerInterface olServerInterface = OLServerInterface(oclpa.getServerAddress(servarName));
         olServerInterface.callServer(msg.sender, versionCaller);
+        addLog(TAG, "6");
         return errorCode_success;
     }
 
     function preCheckAndPay(string servarName, uint versionCaller) public returns (uint errorCode){
+        addLog(TAG, "1");
         OLServerInterface olServerInterface = OLServerInterface(oclpa.getServerAddress(servarName));
         if (versionCaller != getCurrentVersion()) {
             return errorCode_versionIsOld;
         }
 
+        addLog(TAG, "2");
         OLBlackWhiteListInterface olBlackWhiteListInterface = OLBlackWhiteListInterface(oclpa.getServerAddress("OLBlackWhiteList"));
         if (!olBlackWhiteListInterface.isAddrCanCallServer(servarName, msg.sender)) {
             return errorCode_noPermitAccess;
@@ -55,6 +60,7 @@ contract OLMarket is OLMarketServerInterface, OLAddressSuperManager, OLCommonCal
         if (nServerStatus != serverStatusNormal) {
             return errorCode_serverIsFreezed;
         }
+        addLog(TAG, "3");
 
         OLSuperManager olSuperManager = OLSuperManager(getSuperManagerContractAddress());
         StantardTokenInterface stantardTokenInterface = StantardTokenInterface(oclpa.getServerAddress("OracleChainToken"));
@@ -66,6 +72,7 @@ contract OLMarket is OLMarketServerInterface, OLAddressSuperManager, OLCommonCal
         if (nAllowance < nFeeNeeded) {
             return errorCode_feeIsNotEnough;
         }
+        addLog(TAG, "4");
 
 
         stantardTokenInterface.transferFrom(msg.sender, olSuperManager.getSuperManager(), nFeeNeeded);

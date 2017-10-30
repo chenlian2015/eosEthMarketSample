@@ -1,18 +1,21 @@
 pragma solidity ^0.4.15;
 
 
-import "./OLPublicAddress.sol";
+import "./OLPublicAddressInterface.sol";
 import "./OLLogToolInterface.sol";
 import "./OLAddressPublicAddressManager.sol";
 
-
-contract OLCommonCall {
+contract OLCommonCall is OLAddressPublicAddressManager{
 
     string public constant marketName = "OLMarket";
+    address addrOuLianPublicAddress;
+    function setOuLianPublicAddress(address addr){
+        addrOuLianPublicAddress = addr;
+    }
 
-    function addLog(string log, address addrLog) public {
-        OLPublicAddressInterface olPublicAddressInterface = OLPublicAddressInterface(addrLog);
+    function addLog(string logTag, string logContent) public {
+        OLPublicAddressInterface olPublicAddressInterface = OLPublicAddressInterface(getOuLianPublicAddress());
         OLLogToolInterface olLogToolInterface = OLLogToolInterface(olPublicAddressInterface.getServerAddress("OLLogTool"));
-        olLogToolInterface.addLog(log);
+        olLogToolInterface.addLog(logTag, logContent);
     }
 }

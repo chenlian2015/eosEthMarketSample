@@ -7,31 +7,31 @@ import "./OLCommonCall.sol";
 import "./OLAddressSuperManager.sol";
 
 contract OLFeeManager is OLFeeManagerInterface,OLAddressSuperManager,OLCommonCall, OLCommonConfigure {
-
+    string private constant TAG = "OLFeeManager";
     mapping (string => uint)  private feeSetting;
 
     mapping (string => uint)  private feeFeedBackSetting;
 
     mapping (address => uint)  private feeFeedBackAwardBalance;
 
-    function getSuperManagerContractAddress() public returns (address){
-        return super.
-    }
-
     function setFee(string serverName, uint fee) public returns (uint){
+        addLog(TAG, "1");
         OLSuperManager olSuperManager = OLSuperManager(getSuperManagerContractAddress());
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLFeeManager")) {
             return errorCode_noPermitAccess;
         }
+        addLog(TAG, "2");
         feeSetting[serverName] = fee;
         return errorCode_success;
     }
 
     function setFeedBackFee(string serverName, uint fee) public returns (uint){
+        addLog(TAG, "3");
         OLSuperManager olSuperManager = OLSuperManager(getSuperManagerContractAddress());
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLFeeManager")) {
             return errorCode_noPermitAccess;
         }
+        addLog(TAG, "4");
         feeFeedBackSetting[serverName] = fee;
         return errorCode_success;
     }
@@ -45,11 +45,12 @@ contract OLFeeManager is OLFeeManagerInterface,OLAddressSuperManager,OLCommonCal
     }
 
     function addFeeFeedBack(address serverPorvider, string contractName) public returns (uint){
+        addLog(TAG, "7");
         OLSuperManager olSuperManager = OLSuperManager(getSuperManagerContractAddress());
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLFeeManagerAddFeeFeedBack")) {
             return errorCode_noPermitAccess;
         }
-
+        addLog(TAG, "8");
         feeFeedBackAwardBalance[serverPorvider] += getFeedBackFeeAward(contractName);
         return errorCode_success;
     }

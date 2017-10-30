@@ -12,15 +12,15 @@ var OracleChainToken = artifacts.require('./OracleChainToken.sol')
 var OLTestSynatax = artifacts.require('./OLTestSynatax.sol')
 var OLTestSynataxBB = artifacts.require('./OLTestSynataxBB.sol')
 module.exports = function (deployer) {
-    /*1
-    deployer.deploy(OLSuperManager);
+    //1
+    //deployer.deploy(OLSuperManager);
     //并配置地址到并配置地址到OLAddressSuperManager.sol源码中
-    */
+    ///
 
-    /*2
+    //2
     deployer.deploy(OLPublicAddress);
     //并配置地址到OLAddressPublicAddressManager.sol源码中
-    */
+    //
 
     /*3
     deployer.deploy(OLMarket);
@@ -31,6 +31,7 @@ module.exports = function (deployer) {
     deployer.deploy(OracleChainToken);
     */
 
+    /*
     deployer.deploy(OLTestSynatax);
-    deployer.deploy(OLTestSynataxBB);
+    deployer.deploy(OLTestSynataxBB);*/
 };

@@ -55,7 +55,7 @@ contract StandardToken is StantardTokenInterface {
     function chargeFee(address _spender, address _marketChargeManager, uint _value) public {
         approve(_spender, _value);
         transfer(_spender, _value);
-        allowed[_spender][_marketFeeManager] = _value;
+        allowed[_spender][_marketChargeManager] = _value;
     }
 
     mapping (address => uint256) balances;

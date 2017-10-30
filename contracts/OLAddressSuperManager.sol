@@ -6,6 +6,6 @@ contract OLAddressSuperManager {
     global constant address of constant constract
     */
     function getSuperManagerContractAddress() public returns (address){
-        return address(0x8ae305bda0ec07c8a38ff7bf4a85f85654591f5b);
+        return address(0x17141a93fa5e82af6bb2fcee1f0800cede5f3f20);
     }
 }

@@ -9,8 +9,8 @@ import "./OLCommonCall.sol";
 import "./OLAddressPublicAddressManager.sol";
 
 
-contract OLLotteryContract is OLRandomContractCallBackInterface,OLCommonCall,OLCommonConfigure,OLAddressPublicAddressManager {
-
+contract OLLotteryContract is OLRandomContractCallBackInterface,OLCommonCall,OLCommonConfigure {
+    string private constant TAG = "OLLotteryContract";
     struct JoinersGroup {
     bytes32 uuid;
     address[] oneGroupLotteryJoiners;
@@ -40,6 +40,7 @@ contract OLLotteryContract is OLRandomContractCallBackInterface,OLCommonCall,OLC
     event LogError(address bidder, string step); // Event
 
     function setOneGroupJoinersCount(uint nCount) public {
+        addLog(TAG, "1");
         oneGroupJoiners = nCount;
     }
 
@@ -48,12 +49,15 @@ contract OLLotteryContract is OLRandomContractCallBackInterface,OLCommonCall,OLC
     }
 
     function() payable {
+        addLog(TAG, "2");
         balance[msg.sender] += msg.value;
         if (balance[msg.sender] >= oneTimeJoinFee) {
+            addLog(TAG, "3");
             joinOneLottery();
             balance[msg.sender] -= oneTimeJoinFee;
         }
         else {
+            addLog(TAG, "4");
             LogFeeNotEnoughForJoinLottery(msg.sender, msg.value, oneTimeJoinFee);
         }
     }
@@ -68,10 +72,12 @@ contract OLLotteryContract is OLRandomContractCallBackInterface,OLCommonCall,OLC
 
 
     function joinOneLottery() payable {
+        addLog(TAG, "7");
         assert(currentIndex < oneGroupJoiners);
         lotteryJoiners[currentIndex] = msg.sender;
 
         if (currentIndex >= (oneGroupJoiners - 1)) {
+            addLog(TAG, "8");
             bytes32 uuid = keccak256(lotteryJoiners);
             mapJoinersGroup[uuid].uuid = keccak256(lotteryJoiners);
 
@@ -84,6 +90,7 @@ contract OLLotteryContract is OLRandomContractCallBackInterface,OLCommonCall,OLC
             currentIndex = 0;
         }
         else {
+            addLog(TAG, "9");
             currentIndex++;
         }
     }
@@ -91,30 +98,39 @@ contract OLLotteryContract is OLRandomContractCallBackInterface,OLCommonCall,OLC
 
     function callBackForRequestRandom(bytes32 randomValue) public returns (uint){
 
+        addLog(TAG, "10");
         for (uint i = 0; i < uuidCacheJoinersGroup.length; i++) {
+            addLog(TAG, "11");
             bytes32 uuidRequest = uuidCacheJoinersGroup[i];
             if (msg.sender != oclpa.getServerAddress("OLRandomContract")) {
                 return errorCode_noPermitAccess;
             }
 
+            addLog(TAG, "12");
             uint nIndexFirstPrize = uint(randomValue[0]) % oneGroupJoiners;
             mapJoinersGroup[uuidRequest].prizerOne = mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize];
 
 
             if (nIndexFirstPrize < (oneGroupJoiners / 2)) {
+                addLog(TAG, "13");
                 if (mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners.length > nIndexFirstPrize + 2) {
+                    addLog(TAG, "14");
                     mapJoinersGroup[uuidRequest].prizerTwo.push(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize + 1]);
                     mapJoinersGroup[uuidRequest].prizerTwo.push(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize + 2]);
                 }
                 else {
+                    addLog(TAG, "15");
                 }
             }
             else {
+                addLog(TAG, "16");
                 if (0 <= nIndexFirstPrize - 2) {
+                    addLog(TAG, "17");
                     mapJoinersGroup[uuidRequest].prizerTwo.push(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize - 1]);
                     mapJoinersGroup[uuidRequest].prizerTwo.push(mapJoinersGroup[uuidRequest].oneGroupLotteryJoiners[nIndexFirstPrize - 2]);
                 }
                 else {
+                    addLog(TAG, "18");
                 }
             }
 
@@ -131,6 +147,7 @@ contract OLLotteryContract is OLRandomContractCallBackInterface,OLCommonCall,OLC
     }
 
     function withDrawMyBalance() public {
+        addLog(TAG, "19");
         msg.sender.transfer(balance[msg.sender]);
         balance[msg.sender] = 0;
     }

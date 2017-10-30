@@ -11,7 +11,9 @@ import "./OLCommonConfigure.sol";
 import "./OLCommonCall.sol";
 import "./OLAddressPublicAddressManager.sol";
 
-contract OLRandomContract is OLCommonCall,OLCommonConfigure, OLRandomContractInterface,OLAddressPublicAddressManager{
+
+contract OLRandomContract is OLCommonCall, OLCommonConfigure, OLRandomContractInterface {
+    string private constant TAG = "OLRandomContract";
 
     string currentContractName = "OLRandomContract";
 
@@ -40,6 +42,7 @@ contract OLRandomContract is OLCommonCall,OLCommonConfigure, OLRandomContractInt
     uint private nCurrentIndex = 0;
 
     function addOneRequest(address addr) private {
+        addLog(TAG, "1");
         OneRequest memory oneRequest;
         oneRequest.callBackAddress = addr;
         oneRequest.nHashGetedCount = 0;
@@ -47,7 +50,7 @@ contract OLRandomContract is OLCommonCall,OLCommonConfigure, OLRandomContractInt
     }
 
     function requestOneUUID(address callBackAddress, uint versionCaller) public returns (uint code){
-
+        addLog(TAG, "2");
         OLPublicAddress oclpa = OLPublicAddress(getOuLianPublicAddress());
         OLMarketServerInterface olMarketServerInterface = OLMarketServerInterface(oclpa.getServerAddress(marketName));
         uint nCode = olMarketServerInterface.preCheckAndPay(currentContractName, versionCaller);
@@ -55,25 +58,32 @@ contract OLRandomContract is OLCommonCall,OLCommonConfigure, OLRandomContractInt
             return nCode;
         }
 
+        addLog(TAG, "3");
         addOneRequest(callBackAddress);
+        addLog(TAG, "4");
         return errorCode_success;
     }
 
     function callServer(address callFrom, uint versionCaller) public returns (bool){
         OLPublicAddress oclpa = OLPublicAddress(getOuLianPublicAddress());
+        addLog(TAG, "5");
         if (msg.sender == oclpa.getServerAddress(marketName)) {
+            addLog(TAG, "6");
             addOneRequest(callFrom);
         }
     }
 
     function sendOnlyHash(bytes32 hash) public returns (uint){
 
+        addLog(TAG, "7");
         if (getCurrentNeedsCount() <= 0) {
+            addLog(TAG, "8");
             return errorCode_noHashSeedNeeded;
         }
 
         //一个人，针对一个请求，只能投一次票
         if (cacheRequests[nCurrentIndex].senderSeedLable[msg.sender] != nNothingProvidedLable) {
+            addLog(TAG, "9");
             return errorCode_hashSeedProvided;
         }
 
@@ -82,54 +92,68 @@ contract OLRandomContract is OLCommonCall,OLCommonConfigure, OLRandomContractInt
 
         cacheRequests[nCurrentIndex].hashSeed[hash] = nHashProvidedLable;
         cacheRequests[nCurrentIndex].nHashGetedCount++;
+        addLog(TAG, "10");
         return errorCode_success;
     }
 
     function nowCanProvideHash() public returns (bool){
+        addLog(TAG, "11");
         if (getCurrentNeedsCount() > 0) {
+            addLog(TAG, "12");
             return (cacheRequests[nCurrentIndex].senderSeedLable[msg.sender] != nHashProvidedLable);
         }
         else {
+            addLog(TAG, "13");
             return false;
         }
     }
 
     function sendSeedAndHash(bytes32 seed, bytes32 hash) public returns (uint) {
 
+        addLog(TAG, "14");
         if (getCurrentNeedsCount() <= 0) {
+            addLog(TAG, "15");
             return errorCode_noHashSeedNeeded;
         }
 
+        addLog(TAG, "16");
         if (cacheRequests[nCurrentIndex].nHashGetedCount < seedCountNeeded) {
+            addLog(TAG, "17");
             return errorCode_hashSeedCountNotEnough;
         }
 
-
+        addLog(TAG, "18");
         if (hash != keccak256(seed)) {
+            addLog(TAG, "19");
             return errorCode_hashSeedNotPair;
         }
 
-
+        addLog(TAG, "20");
         if (cacheRequests[nCurrentIndex].hashSeed[hash] != nHashProvidedLable) {
+            addLog(TAG, "21");
             return errorCode_hashNotProvided;
         }
 
+        addLog(TAG, "22");
         cacheRequests[nCurrentIndex].hashSeed[hash] = seed;
         cacheRequests[nCurrentIndex].seedIndex.push(hash);
         cacheRequests[nCurrentIndex].nSeedGetedCount++;
 
         if (cacheRequests[nCurrentIndex].nSeedGetedCount == seedCountNeeded) {
-
+            addLog(TAG, "23");
             bytes memory bytesSeed = getBytes(cacheRequests[nCurrentIndex].hashSeed[cacheRequests[nCurrentIndex].seedIndex[0]]);
             for (uint i = 1; i < cacheRequests[nCurrentIndex].seedIndex.length; i++) {
+                addLog(TAG, "24");
                 bytes32 keytmp = cacheRequests[nCurrentIndex].seedIndex[i];
                 bytesSeed = addBytes(cacheRequests[nCurrentIndex].hashSeed[keytmp], bytesSeed);
             }
 
-            while (nCurrentIndex < cacheRequests.length)
-            OLRandomContractCallBackInterface olRandomContractCallBackInterface = OLRandomContractCallBackInterface(cacheRequests[nCurrentIndex].callBackAddress);
-            olRandomContractCallBackInterface.callBackForRequestRandom(keccak256(bytesSeed));
-            nCurrentIndex++;
+            while (nCurrentIndex < cacheRequests.length) {
+                addLog(TAG, "25");
+                OLRandomContractCallBackInterface olRandomContractCallBackInterface = OLRandomContractCallBackInterface(cacheRequests[nCurrentIndex].callBackAddress);
+                olRandomContractCallBackInterface.callBackForRequestRandom(keccak256(bytesSeed));
+                nCurrentIndex++;
+            }
         }
     }
 
@@ -156,6 +180,7 @@ contract OLRandomContract is OLCommonCall,OLCommonConfigure, OLRandomContractInt
     }
 
     function getCurrentNeedsCount() public returns (uint){
+        addLog(TAG, "26");
         return cacheRequests.length - nCurrentIndex;
     }
 }

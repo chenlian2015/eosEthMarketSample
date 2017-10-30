@@ -11,22 +11,27 @@ import "./OLFeeManagerInterface.sol";
 import "./OLCommonConfigure.sol";
 import "./OLLogToolInterface.sol";
 
-contract OLLogTool is OLLogToolInterface{
-    string [] private logs;
 
-    function addLog(string log)public{
-        logs.push(log);
+contract OLLogTool is OLLogToolInterface {
+
+    string [] private logTAG;
+
+    string [] private logsContent;
+
+    function addLog(string log, string logContent) public {
+        logTAG.push(log);
+        logsContent.push(logContent);
     }
 
-    function length()public returns(uint){
-        return logs.length;
+    function length() public returns (uint){
+        return logTAG.length;
     }
 
-    function getAt(uint nIndex)public returns(string){
-        return logs[nIndex];
+    function getAt(uint nIndex) public returns (string){
+        return logTAG[nIndex];
     }
 
-    function clear()public{
-        delete logs;
+    function clear() public {
+        delete logTAG;
     }
 }

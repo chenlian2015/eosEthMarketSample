@@ -1,9 +1,9 @@
 pragma solidity ^0.4.15;
 
 
-contract OLLogToolInterface{
+contract OLLogToolInterface {
 
-    function addLog(string log) public {}
+    function addLog(string log, string logContent) public {}
 
     function length() public returns (uint){}
 
