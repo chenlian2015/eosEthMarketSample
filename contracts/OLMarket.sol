@@ -12,8 +12,10 @@ import "./OLCommonConfigure.sol";
 import "./OLAddressSuperManager.sol";
 import "./OLCommonCall.sol";
 import "./OLAddressPublicAddressManager.sol";
+import "./OLSuperManager.sol";
 
-contract OLMarket is OLMarketServerInterface,OLAddressSuperManager,OLCommonCall, OLCommonConfigure,OLAddressPublicAddressManager {
+
+contract OLMarket is OLMarketServerInterface, OLAddressSuperManager, OLCommonCall, OLCommonConfigure, OLAddressPublicAddressManager {
 
     OLPublicAddress oclpa;
 
@@ -29,7 +31,7 @@ contract OLMarket is OLMarketServerInterface,OLAddressSuperManager,OLCommonCall,
     function callServer(string servarName, uint versionCaller)returns (uint reason){
 
         uint nCode = preCheckAndPay(servarName, versionCaller);
-        if(nCode != errorCode_success){
+        if (nCode != errorCode_success) {
             return nCode;
         }
 
@@ -54,8 +56,10 @@ contract OLMarket is OLMarketServerInterface,OLAddressSuperManager,OLCommonCall,
             return errorCode_serverIsFreezed;
         }
 
+        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerContractAddress());
         StantardTokenInterface stantardTokenInterface = StantardTokenInterface(oclpa.getServerAddress("OracleChainToken"));
-        uint nAllowance = stantardTokenInterface.allowance(msg.sender, oclpa.getServerAddress("octManager"));
+        uint nAllowance = stantardTokenInterface.allowance(msg.sender, olSuperManager.getSuperManager());
+
 
         OLFeeManagerInterface olFeeManagerInterface = OLFeeManagerInterface(oclpa.getServerAddress("OLFeeManager"));
         uint nFeeNeeded = olFeeManagerInterface.getFee(servarName);
@@ -63,8 +67,8 @@ contract OLMarket is OLMarketServerInterface,OLAddressSuperManager,OLCommonCall,
             return errorCode_feeIsNotEnough;
         }
 
-        stantardTokenInterface.transferFrom(msg.sender, oclpa.getServerAddress("octManager"), nFeeNeeded);
+
+        stantardTokenInterface.transferFrom(msg.sender, olSuperManager.getSuperManager(), nFeeNeeded);
         return errorCode_success;
     }
-
 }

@@ -51,8 +51,8 @@ contract OLCommonConfigure {
     /*
     contrant white or black list check way
     */
+    uint notCheck = 0;
     uint onlyCheckWhiteList = 1;
     uint onlyCheckNotInBlackList = 2;
     uint checkWhiteAndBlackList = 3;
-    uint notCheck = 0;
 }

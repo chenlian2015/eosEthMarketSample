@@ -1,14 +1,36 @@
-// var OLPublicAddress = artifacts.require("./OLPublicAddress.sol")
-// var OLRandomContract = artifacts.require('./OLRandomContract.sol')
-// var OCMarket = artifacts.require('./OLMarket.sol')
-// var OCLotteryContract = artifacts.require('./OLLotteryContract.sol')
+var OLSuperManager = artifacts.require('./OLSuperManager.sol')
+var OLPublicAddress = artifacts.require('./OLPublicAddress.sol')
+
+var OLMarket = artifacts.require('./OLMarket.sol')
+var OLBlackWhiteList = artifacts.require('./OLBlackWhiteList.sol')
+var OLFeeManager = artifacts.require('./OLFeeManager.sol')
+var OLLogTool = artifacts.require('./OLLogTool.sol')
+var OLRandomContract = artifacts.require('./OLRandomContract.sol')
+var OracleChainToken = artifacts.require('./OracleChainToken.sol')
+
+
 var OLTestSynatax = artifacts.require('./OLTestSynatax.sol')
 var OLTestSynataxBB = artifacts.require('./OLTestSynataxBB.sol')
-module.exports = function(deployer) {
-   deployer.deploy(OLTestSynatax);
+module.exports = function (deployer) {
+    /*1
+    deployer.deploy(OLSuperManager);
+    //并配置地址到并配置地址到OLAddressSuperManager.sol源码中
+    */
+
+    /*2
+    deployer.deploy(OLPublicAddress);
+    //并配置地址到OLAddressPublicAddressManager.sol源码中
+    */
+
+    /*3
+    deployer.deploy(OLMarket);
+    deployer.deploy(OLBlackWhiteList);
+    deployer.deploy(OLFeeManager);
+    deployer.deploy(OLLogTool);
+    deployer.deploy(OLRandomContract);
+    deployer.deploy(OracleChainToken);
+    */
+
+    deployer.deploy(OLTestSynatax);
     deployer.deploy(OLTestSynataxBB);
-   // deployer.deploy(OCLotteryContract);
-   // deployer.deploy(OCMarket);
-   // deployer.deploy(OLRandomContract);
-   // deployer.deploy(ThirdPartyVoter);
 };

@@ -18,7 +18,7 @@ contract OLPublicAddress is OLCommonConfigure,OLAddressSuperManager,OLPublicAddr
     */
     function putServerAddress(string contractName, address contractAddress, uint serverStatusPar) public returns (uint) {
 
-        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerAddress());
+        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerContractAddress());
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLPublicAddress")) {
             return errorCode_success;
         }
@@ -30,7 +30,7 @@ contract OLPublicAddress is OLCommonConfigure,OLAddressSuperManager,OLPublicAddr
     }
 
     function removeServer(string contractName)public returns(uint){
-        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerAddress());
+        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerContractAddress());
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLPublicAddress")) {
             return errorCode_noPermitAccess;
         }
@@ -39,7 +39,7 @@ contract OLPublicAddress is OLCommonConfigure,OLAddressSuperManager,OLPublicAddr
     }
 
     function setServerStatus(string contractName, uint serverStatusPar)public returns(uint){
-        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerAddress());
+        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerContractAddress());
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLPublicAddress")) {
             return errorCode_noPermitAccess;
         }

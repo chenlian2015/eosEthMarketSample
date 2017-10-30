@@ -14,8 +14,12 @@ contract OLFeeManager is OLFeeManagerInterface,OLAddressSuperManager,OLCommonCal
 
     mapping (address => uint)  private feeFeedBackAwardBalance;
 
+    function getSuperManagerContractAddress() public returns (address){
+        return super.
+    }
+
     function setFee(string serverName, uint fee) public returns (uint){
-        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerAddress());
+        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerContractAddress());
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLFeeManager")) {
             return errorCode_noPermitAccess;
         }
@@ -24,7 +28,7 @@ contract OLFeeManager is OLFeeManagerInterface,OLAddressSuperManager,OLCommonCal
     }
 
     function setFeedBackFee(string serverName, uint fee) public returns (uint){
-        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerAddress());
+        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerContractAddress());
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLFeeManager")) {
             return errorCode_noPermitAccess;
         }
@@ -41,7 +45,7 @@ contract OLFeeManager is OLFeeManagerInterface,OLAddressSuperManager,OLCommonCal
     }
 
     function addFeeFeedBack(address serverPorvider, string contractName) public returns (uint){
-        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerAddress());
+        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerContractAddress());
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLFeeManagerAddFeeFeedBack")) {
             return errorCode_noPermitAccess;
         }

@@ -1,16 +1,18 @@
 pragma solidity ^0.4.15;
 
+
 import "./StantardTokenInterface.sol";
+
 
 contract StandardToken is StantardTokenInterface {
 
-    uint256 constant MAX_UINT256 = 2*256 - 1;
+    uint256 constant MAX_UINT256 = 2 * 256 - 1;
 
     function transfer(address _to, uint256 _value) returns (bool success) {
         //Default assumes totalSupply can't be over max (2^256 - 1).
         //If your token leaves out totalSupply and can issue more tokens as time goes on, you need to check if it doesn't wrap.
         //Replace the if with this one instead.
-        //require(balances[msg.sender] >= _value && balances[_to] + _value > balances[_to]);
+        require(balances[msg.sender] >= _value && balances[_to] + _value > balances[_to]);
         require(balances[msg.sender] >= _value);
         balances[msg.sender] -= _value;
         balances[_to] += _value;
@@ -20,7 +22,7 @@ contract StandardToken is StantardTokenInterface {
 
     function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
         //same as above. Replace this line with the following if you want to protect against wrapping uints.
-        //require(balances[_from] >= _value && allowed[_from][msg.sender] >= _value && balances[_to] + _value > balances[_to]);
+        require(balances[_from] >= _value && allowed[_from][msg.sender] >= _value && balances[_to] + _value > balances[_to]);
         uint256 allowance = allowed[_from][msg.sender];
         require(balances[_from] >= _value && allowance >= _value);
         balances[_to] += _value;
@@ -46,6 +48,17 @@ contract StandardToken is StantardTokenInterface {
         return allowed[_owner][_spender];
     }
 
+    /*
+    @param _spender 需要调用市场服务的合约地址
+    @param _marketChargeManager 市场费用管理员地址
+    */
+    function chargeFee(address _spender, address _marketChargeManager, uint _value) public {
+        approve(_spender, _value);
+        transfer(_spender, _value);
+        allowed[_spender][_marketFeeManager] = _value;
+    }
+
     mapping (address => uint256) balances;
+
     mapping (address => mapping (address => uint256)) allowed;
 }

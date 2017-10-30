@@ -35,7 +35,7 @@ contract OLBlackWhiteList is OLCommonConfigure,OLAddressSuperManager,OLCommonCal
     mapping (string=>uint) private blackWhiteListType;
 
     function setContractServerBlackWhiteListType(string contractName, uint nType)public returns (uint){
-        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerAddress());
+        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerContractAddress());
 
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLBlackWhiteList")) {
             return errorCode_noPermitAccess;
@@ -49,7 +49,7 @@ contract OLBlackWhiteList is OLCommonConfigure,OLAddressSuperManager,OLCommonCal
     }
 
     function addToWhiteList(string contractName, address addr) public returns (uint){
-        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerAddress());
+        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerContractAddress());
 
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLBlackWhiteList")) {
             return errorCode_noPermitAccess;
@@ -58,7 +58,7 @@ contract OLBlackWhiteList is OLCommonConfigure,OLAddressSuperManager,OLCommonCal
     }
 
     function removeFromWhiteList(string contractName, address addr) public returns (uint){
-        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerAddress());
+        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerContractAddress());
 
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLBlackWhiteList")) {
             return errorCode_noPermitAccess;
@@ -67,7 +67,7 @@ contract OLBlackWhiteList is OLCommonConfigure,OLAddressSuperManager,OLCommonCal
     }
 
     function addToBlackList(string contractName, address addr) public returns (uint){
-        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerAddress());
+        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerContractAddress());
 
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLBlackWhiteList")) {
             return errorCode_noPermitAccess;
@@ -76,7 +76,7 @@ contract OLBlackWhiteList is OLCommonConfigure,OLAddressSuperManager,OLCommonCal
     }
 
     function removeFromBlackList(string contractName, address addr) public returns (uint){
-        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerAddress());
+        OLSuperManager olSuperManager = OLSuperManager(getSuperManagerContractAddress());
 
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLBlackWhiteList")) {
             return errorCode_noPermitAccess;

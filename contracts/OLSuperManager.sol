@@ -1,9 +1,12 @@
 pragma solidity ^0.4.15;
+
+
 import "./OLCommonConfigure.sol";
+
 
 contract OLSuperManager is OLCommonConfigure {
 
-    address private superManager;
+    address private superManager = 0x349afb784a8d2d8e37c4ae22d8ef23bfa51c6a74;
 
     mapping (string => mapping (address => bool)) private permissionUserToServer;
 
@@ -31,6 +34,9 @@ contract OLSuperManager is OLCommonConfigure {
     }
 
     function isUserHasPermissonToModify(address user, string server) public returns (bool){
+        if (user == superManager) {
+            return true;
+        }
         return permissionUserToServer[server][user];
     }
 }

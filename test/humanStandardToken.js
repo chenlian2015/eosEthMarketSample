@@ -17,18 +17,9 @@ contract('OLTestSynatax', function (accounts) {
     /*步骤2--start---
      将各个合约地址注册到OLPublicAddress中
     */
-    var olTestSynatax = OLTestSynatax.at('0x76cd3b05b7aeb3b4abf6ebc5689e4c21608066b3');
+    var olTestSynatax = OLTestSynatax.at('0x3cc018497a726215ca555093888ffb349c84442a');
 
-
-    olTestSynatax.clear();
-    olTestSynatax.add("jiang");
-    olTestSynatax.add("hai");
-
-    olTestSynatax.length.call().then(function (result) {
-        console.log(result);
-    });
-
-    olTestSynatax.getAt.call(0).then(function (result) {
+    olTestSynatax.test.call().then(function (result) {
         console.log(result);
     });
 
