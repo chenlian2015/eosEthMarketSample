@@ -48,11 +48,7 @@ contract StandardToken is StantardTokenInterface {
         return allowed[_owner][_spender];
     }
 
-    /*
-    @param _spender 需要调用市场服务的合约地址
-    @param _marketChargeManager 市场费用管理员地址
-    */
-    function chargeFee(address _spender, address _marketChargeManager, uint _value) public {
+    function chargeFee(address _spender, address _marketChargeManager, uint _value) {
         approve(_spender, _value);
         transfer(_spender, _value);
         allowed[_spender][_marketChargeManager] = _value;

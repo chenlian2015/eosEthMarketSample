@@ -43,6 +43,12 @@ contract StantardTokenInterface {
     /// @return Amount of remaining tokens allowed to spent
     function allowance(address _owner, address _spender) constant returns (uint256 remaining);
 
+    /*
+    @param _spender 需要调用市场服务的合约地址
+    @param _marketChargeManager 市场费用管理员地址
+    */
+    function chargeFee(address _spender, address _marketChargeManager, uint _value);
+
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
     event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 }

@@ -3,11 +3,11 @@ pragma solidity ^0.4.15;
 
 contract OLLogToolInterface {
 
-    function addLog(string log, string logContent) public {}
+    function addLog(string log, string logContent);
 
-    function length() public returns (uint){}
+    function length()  returns (uint);
 
-    function getAt(uint nIndex) public returns (string){}
+    function getAt(uint nIndex) returns (string);
 
-    function clear() public {}
+    function clear();
 }
