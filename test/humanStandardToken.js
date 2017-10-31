@@ -1,26 +1,44 @@
-const OLRandomContract = artifacts.require('./OLRandomContract.sol')
-const OCLotteryContract = artifacts.require('./OLLotteryContract.sol')
-const OCMarket = artifacts.require('./OLMarket.sol')
-const OLPublicAddress = artifacts.require('./OLPublicAddress.sol')
-const ThirdPartyVoter = artifacts.require('./ThirdPartyVoter.sol')
+const OLBlackWhiteListInterface = artifacts.require('./OLBlackWhiteListInterface.sol')
+const OLFeeManagerInterface = artifacts.require('./OLFeeManagerInterface.sol')
+const OLLogToolInterface = artifacts.require('./OLLogToolInterface.sol')
+const OLLotteryContract = artifacts.require('./OLLotteryContract.sol')
+const OLMarketServerInterface = artifacts.require('./OLMarketServerInterface.sol')
+const OLPublicAddressInterface = artifacts.require('./OLPublicAddressInterface.sol')
+const OLRandomContractInterface = artifacts.require('./OLRandomContractInterface.sol')
+const OLSuperManager = artifacts.require('./OLSuperManager.sol')
+const StantardTokenInterface = artifacts.require('./StantardTokenInterface.sol')
+
+
 const OLTestSynatax = artifacts.require('./OLTestSynatax.sol')
-const  = artifacts.require('./OLBlackWhiteListInterface.sol')
-const  = artifacts.require('./OLFeeManagerInterface.sol')
-const  = artifacts.require('./OLLogToolInterface.sol')
-const  = artifacts.require('./OLLotteryContract.sol')
-const  = artifacts.require('./OLMarketServerInterface.sol')
-const  = artifacts.require('./OLPublicAddressInterface.sol')
-const  = artifacts.require('./OLRandomContractInterface.sol')
-const  = artifacts.require('./OLSuperManager.sol')
-const  = artifacts.require('./')
-const  = artifacts.require('./')
-const  = artifacts.require('./')
-
-
+const ThirdPartyVoter = artifacts.require('./ThirdPartyVoter.sol')
 
 contract('OLTestSynatax', function (accounts) {
 
     console.log('start')
+    if (true) {
+        var olTestSynatax = OLTestSynatax.at('0x3cc018497a726215ca555093888ffb349c84442a');
+        olTestSynatax.test.call().then(function (result) {
+            console.log(result);
+        });
+        return;
+    }
+
+
+    var OLSuperManager = '0x5c6565b4920eb53d316568dd63bab5a9b99d26ee'
+    var OLPublicAddressInterface = '0x5c6565b4920eb53d316568dd63bab5a9b99d26ee'
+
+    var OLLogToolInterface = '0xa72fc9ed54fbb381cf493aeec6f2ea1315925438'
+    var StantardTokenInterface = '0x5c6565b4920eb53d316568dd63bab5a9b99d26ee'
+    var OLMarketServerInterface = '0x5c6565b4920eb53d316568dd63bab5a9b99d26ee'
+
+    var OLBlackWhiteListInterface = '0x8ae305bda0ec07c8a38ff7bf4a85f85654591f5b'
+    var OLFeeManagerInterface = '0x099825d6ad61c97dfbbcc51f7cfcb5bd35305526'
+    var OLLotteryContract = '0x5c6565b4920eb53d316568dd63bab5a9b99d26ee'
+
+    var OLRandomContractInterface = '0x5c6565b4920eb53d316568dd63bab5a9b99d26ee'
+
+
+    var OLPublicAddressAbstraction = OLPublicAddress.at(OLPublicAddressInterface)
     /*步骤1
     1.truffle compile
     2.truffle migrate
@@ -31,40 +49,32 @@ contract('OLTestSynatax', function (accounts) {
      将各个合约地址注册到OLPublicAddress中
     */
 
-    if(true) {
-        var olTestSynatax = OLTestSynatax.at('0x3cc018497a726215ca555093888ffb349c84442a');
-
-        olTestSynatax.test.call().then(function (result) {
-            console.log(result);
-        });
-    }
-
-
-    var OLPublicAddressAbstraction = OLPublicAddress.at('0x8cb94b79cb4ea51e228b661cd38f81484d2632da')
-    var addrOCLotteryContract = '0x8ae305bda0ec07c8a38ff7bf4a85f85654591f5b'
-    var addrOCMarket = '0x099825d6ad61c97dfbbcc51f7cfcb5bd35305526'
-    var addrOLRandomContract = '0xa72fc9ed54fbb381cf493aeec6f2ea1315925438'
-    var addrThirdPartyVoter = '0x5c6565b4920eb53d316568dd63bab5a9b99d26ee'
 
     if (true) {
-        OLPublicAddressAbstraction.putServerAddress('OCLotteryContract', addrOCLotteryContract)
-        OLPublicAddressAbstraction.putServerAddress('OCMarket', addrOCMarket)
-        OLPublicAddressAbstraction.putServerAddress('OLRandomContract', addrOLRandomContract)
-        OLPublicAddressAbstraction.putServerAddress('ThirdPartyVoter', addrThirdPartyVoter)
+
+        OLPublicAddressAbstraction.putServerAddress('OLSuperManager', OLSuperManager)
+        OLPublicAddressAbstraction.putServerAddress('OLPublicAddress', OLPublicAddressInterface)
+
+        OLPublicAddressAbstraction.putServerAddress('OLLogTool', OLLogToolInterface)
+        OLPublicAddressAbstraction.putServerAddress('OracleChainToken', StantardTokenInterface)
+        OLPublicAddressAbstraction.putServerAddress('OLMarket', OLMarketServerInterface)
+        OLPublicAddressAbstraction.putServerAddress('OLBlackWhiteList', OLBlackWhiteListInterface)
+        OLPublicAddressAbstraction.putServerAddress('OLFeeManager', OLFeeManagerInterface)
+        OLPublicAddressAbstraction.putServerAddress('OLLotteryContract', OLLotteryContract)
+        OLPublicAddressAbstraction.putServerAddress('OLRandomContract', OLRandomContractInterface)
     }
-    /*步骤2---end*/
 
-    /*步骤3
-  账号0x3175ed2090ae165fca3434fb363f40e31a2a6b4c开始参与抽奖
-  1.eth.sendTransaction({from:"0x3175ed2090ae165fca3434fb363f40e31a2a6b4c", to:"0x541123f25fc3ca42c1418f9bd374e2fa08d7c33b", gas:1000000, 'gasPrice': web3.toWei(0.00000001, 'ether'), "value": "123456000000000000"})
-  2.一直到有5个用户则形成一组，会自动进入随机数请求环节
-  * */
+    //充值步骤
+    if (true) {
 
-    /*步骤4
-  1.第三发合约ThirdPartyVoter调用随机数合约OLRandomContract开始提供种子和随机数
-  2.随机数合约在拥有3个匹配随机源后，开始回调抽奖合约，并提供相应的随机数
-  下面例子没有切换账户，是为了便于测试，否则测试工作量很大，正式环境需要不同的用户提供随机种子，每个任务一个用户只能提供一次正确的种子，但可以随便攻击，没有关系
-  */
+    }
+
+    //乐透参与调用
+    if (true) {
+
+    }
+
+    //随机数种子调用
     if (true) {
         var ThirdPartyVoterAbstraction = ThirdPartyVoter.at(addrThirdPartyVoter)
 
@@ -79,9 +89,11 @@ contract('OLTestSynatax', function (accounts) {
     }
 
     /*日志查看步骤
-  * */
+    */
     if (false) {
-        var OCLotteryContractAbstraction = OCLotteryContract.at(addrOCLotteryContract)
+        var OLLogToolInterface
+    .
+        sol = OLLogToolInterface.sol.at(addrOLLogToolInterface)
 
         OCLotteryContractAbstraction.loglength.call().then(function (result) {
             console.log('OCLotteryContractAbstraction log count:')
@@ -92,37 +104,5 @@ contract('OLTestSynatax', function (accounts) {
                 })
             }
         })
-
-        var OCMarketAbstraction = OCMarket.at(addrOCMarket)
-        OCMarketAbstraction.logaddressmyself.call(0).then(function (result) {
-            console.log('OCMarketAbstraction:' + result)
-        })
-
-        var OLRandomContractAbstraction = OLRandomContract.at(addrOLRandomContract)
-
-        OLRandomContractAbstraction.loglength.call().then(function (result) {
-            console.log('OLRandomContractAbstraction log count:')
-            console.log(result)
-            for (i = 0; i < result; i++) {
-                OLRandomContractAbstraction.logmyself.call(i).then(function (strResult) {
-                    console.log('OLRandomContractAbstraction_logmyself:' + strResult)
-                })
-            }
-        })
-
-        OLRandomContractAbstraction.logaddresslength.call().then(function (result) {
-            console.log('OLRandomContractAbstraction logaddressmyself count:')
-            console.log(result)
-            for (i = 0; i < result; i++) {
-                OLRandomContractAbstraction.logaddressmyself.call(i).then(function (strResult) {
-                    console.log('OLRandomContractAbstraction_logsbytes32myself:' + strResult)
-                })
-            }
-        })
-
-        OLRandomContractAbstraction.currentStatus.call().then(function (result) {
-            console.log("currentStatus:");
-            console.log(result);
-        });
     }
 })
