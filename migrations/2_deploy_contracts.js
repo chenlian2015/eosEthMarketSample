@@ -10,6 +10,8 @@ var OracleChainToken = artifacts.require('./OracleChainToken.sol')
 
 var OLTestSynatax = artifacts.require('./OLTestSynatax.sol')
 var OLTestSynataxBB = artifacts.require('./OLTestSynataxBB.sol')
+var OLLotteryContract = artifacts.require('./OLLotteryContract.sol')
+
 module.exports = function (deployer) {
   //1
   //deployer.deploy(OLSuperManager);
@@ -17,22 +19,25 @@ module.exports = function (deployer) {
   ///
 
   //2
-  //deployer.deploy(OLPublicAddress);
+  deployer.deploy(OLPublicAddress);
   //并配置地址到OLAddressPublicAddressManager.sol源码中
   //
 
   //3
   if (true) {
-    // deployer.deploy(OLMarket)
-    // deployer.deploy(OLBlackWhiteList)
-    // deployer.deploy(OLFeeManager)
-    // deployer.deploy(OLLogTool)
+    deployer.deploy(OLMarket)
+    deployer.deploy(OLBlackWhiteList)
+    deployer.deploy(OLFeeManager)
+    deployer.deploy(OLLogTool)
     deployer.deploy(OLRandomContract)
     deployer.deploy(OracleChainToken)
+
   }
   //
 
-  /*
-  deployer.deploy(OLTestSynatax);
-  deployer.deploy(OLTestSynataxBB);*/
+  if(true) {
+    deployer.deploy(OLLotteryContract)
+    deployer.deploy(OLTestSynatax);
+    deployer.deploy(OLTestSynataxBB);
+  }
 }

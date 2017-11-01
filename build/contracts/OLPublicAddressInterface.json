@@ -27,36 +27,6 @@
           "type": "string"
         },
         {
-          "name": "contractAddress",
-          "type": "address"
-        },
-        {
-          "name": "fee",
-          "type": "uint256"
-        },
-        {
-          "name": "serverStatusPar",
-          "type": "uint256"
-        }
-      ],
-      "name": "putServerAddress",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "contractName",
-          "type": "string"
-        },
-        {
           "name": "serverStatusPar",
           "type": "uint256"
         }
@@ -108,6 +78,32 @@
         {
           "name": "contractName",
           "type": "string"
+        },
+        {
+          "name": "contractAddress",
+          "type": "address"
+        },
+        {
+          "name": "serverStatusPar",
+          "type": "uint256"
+        }
+      ],
+      "name": "putServerAddress",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "contractName",
+          "type": "string"
         }
       ],
       "name": "getFee",
@@ -146,5 +142,5 @@
   "unlinked_binary": "0x",
   "networks": {},
   "schema_version": "0.0.5",
-  "updated_at": 1509524860186
+  "updated_at": 1509530215546
 }

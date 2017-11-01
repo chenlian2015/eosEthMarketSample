@@ -2,7 +2,7 @@ pragma solidity ^0.4.15;
 
 
 contract OLPublicAddressInterface {
-    function putServerAddress(string contractName, address contractAddress, uint fee, uint serverStatusPar) public returns (uint);
+    function putServerAddress(string contractName, address contractAddress, uint serverStatusPar) public returns (uint);
 
     function removeServer() public returns (uint);
 

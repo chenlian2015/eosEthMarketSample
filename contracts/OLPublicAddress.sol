@@ -67,4 +67,15 @@ contract OLPublicAddress is OLCommonConfigure,OLAddressSuperManager,OLCommonCall
         addLog(TAG, "10");
         return serverAddress[contractName];
     }
+
+    function addLog(string log, string logContent){
+
+        address addrTmp = serverAddress["OLLogTool"];
+        if(addrTmp == address(0x0)){
+            return;
+        }
+
+        OLLogToolInterface olLogToolInterface = OLLogToolInterface(addrTmp);
+        olLogToolInterface.addLog(log, logContent);
+    }
 }
