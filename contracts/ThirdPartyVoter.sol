@@ -16,15 +16,15 @@ contract ThirdPartyVoter is OLCommonCall, OLCommonConfigure {
         oclpa = OLPublicAddress(getOuLianPublicAddress());
     }
 
-    function sendOnlyHash(string seed){
-        addLog(TAG, "1");
-        OLRandomContract ocRandomServer = OLRandomContract(oclpa.getServerAddress("OLRandomContract"));
-        ocRandomServer.sendOnlyHash(keccak256(keccak256(seed)));
-    }
-
-    function sendSeedAndHash(string seed){
-        addLog(TAG, "2");
-        OLRandomContract ocRandomServer = OLRandomContract(oclpa.getServerAddress("OLRandomContract"));
-        ocRandomServer.sendSeedAndHash(keccak256(seed), keccak256(keccak256(seed)));
-    }
+//    function sendOnlyHash(string seed){
+//        addLog(TAG, "1");
+//        OLRandomContract ocRandomServer = OLRandomContract(oclpa.getServerAddress("OLRandomContract"));
+//        ocRandomServer.sendOnlyHash(keccak256(keccak256(seed)));
+//    }
+//
+//    function sendSeedAndHash(string seed){
+//        addLog(TAG, "2");
+//        OLRandomContract ocRandomServer = OLRandomContract(oclpa.getServerAddress("OLRandomContract"));
+//        ocRandomServer.sendSeedAndHash(keccak256(seed), keccak256(keccak256(seed)));
+//    }
 }

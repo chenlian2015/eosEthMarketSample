@@ -7,9 +7,4 @@ contract OLServerInterface {
     @param versionCaller,the version of contact, who in fact called the server
     */
     function callServer(address callFrom, uint versionCaller) public returns (bool);
-
-    /*
-    @return ,means weather can provide random seed or not now
-    */
-    function currentStatus() public returns (bool);
 }

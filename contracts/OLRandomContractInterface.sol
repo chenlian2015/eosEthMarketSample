@@ -1,5 +1,4 @@
 pragma solidity ^0.4.15;
-
 import "./OLServerInterface.sol";
 
 contract OLRandomContractInterface is OLServerInterface{
@@ -8,6 +7,7 @@ contract OLRandomContractInterface is OLServerInterface{
     one random number perhaps applied to multi requests
     @param callBackAddress  the address to receive random number
     */
+
     function requestOneUUID(address callBackAddress, uint versionCaller) public returns (uint code);
 
     /*

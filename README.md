@@ -17,6 +17,7 @@ deployer.deploy(OLFeeManager);
 deployer.deploy(OLLogTool);
 deployer.deploy(OLRandomContract);
 deployer.deploy(OracleChainToken);
+
 5.
 OLPublicAddress.putServerAddress("OLMarket", address, 1);
 OLPublicAddress.putServerAddress("OLBlackWhiteList", address, 1);

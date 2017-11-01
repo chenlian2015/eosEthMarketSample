@@ -4,8 +4,8 @@ module.exports = {
       host: "localhost",
       port: 8545,
       network_id: "3", // Match any network id
-      from:"0x349afb784a8d2d8e37c4ae22d8ef23bfa51c6a74",
-      gas:4009217
+      from:"0x4dd9211a809db401c06186410752c24a5a4a8175",
+      gas:4612388
     }
    
   }

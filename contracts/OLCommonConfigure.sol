@@ -1,8 +1,6 @@
 pragma solidity ^0.4.15;
 
 
-import "./OLSuperManager.sol";
-
 contract OLCommonConfigure {
     /*
     global error code on OuLianMarket

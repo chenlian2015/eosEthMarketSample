@@ -6,7 +6,7 @@ import "./OLPublicAddressInterface.sol";
 import "./OLAddressSuperManager.sol";
 import "./OLCommonCall.sol";
 
-contract OLPublicAddress is OLCommonConfigure,OLAddressSuperManager,OLCommonCall,OLPublicAddressInterface{
+contract OLPublicAddress is OLCommonConfigure,OLAddressSuperManager,OLCommonCall{
 
     string private constant TAG = "OLPublicAddress";
 

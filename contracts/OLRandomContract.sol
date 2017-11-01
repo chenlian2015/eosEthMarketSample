@@ -2,17 +2,14 @@ pragma solidity ^0.4.15;
 
 
 import "./OLRandomContractCallBackInterface.sol";
-import "./OLServerInterface.sol";
 import "./OLRandomContractInterface.sol";
-import "./OLPublicAddress.sol";
-import "./OLServerInterface.sol";
+import "./OLPublicAddressInterface.sol";
 import "./OLMarketServerInterface.sol";
 import "./OLCommonConfigure.sol";
 import "./OLCommonCall.sol";
-import "./OLAddressPublicAddressManager.sol";
 
 
-contract OLRandomContract is OLCommonCall, OLCommonConfigure, OLRandomContractInterface {
+contract OLRandomContract is OLCommonCall,OLCommonConfigure, OLRandomContractInterface {
     string private constant TAG = "OLRandomContract";
 
     string currentContractName = "OLRandomContract";
@@ -51,7 +48,7 @@ contract OLRandomContract is OLCommonCall, OLCommonConfigure, OLRandomContractIn
 
     function requestOneUUID(address callBackAddress, uint versionCaller) public returns (uint code){
         addLog(TAG, "2");
-        OLPublicAddress oclpa = OLPublicAddress(getOuLianPublicAddress());
+        OLPublicAddressInterface oclpa = OLPublicAddressInterface(getOuLianPublicAddress());
         OLMarketServerInterface olMarketServerInterface = OLMarketServerInterface(oclpa.getServerAddress(marketName));
         uint nCode = olMarketServerInterface.preCheckAndPay(currentContractName, versionCaller);
         if (nCode != errorCode_success) {
@@ -65,7 +62,7 @@ contract OLRandomContract is OLCommonCall, OLCommonConfigure, OLRandomContractIn
     }
 
     function callServer(address callFrom, uint versionCaller) public returns (bool){
-        OLPublicAddress oclpa = OLPublicAddress(getOuLianPublicAddress());
+        OLPublicAddressInterface oclpa = OLPublicAddressInterface(getOuLianPublicAddress());
         addLog(TAG, "5");
         if (msg.sender == oclpa.getServerAddress(marketName)) {
             addLog(TAG, "6");

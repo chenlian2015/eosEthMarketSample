@@ -14,8 +14,8 @@ contract OLCommonCall is OLAddressPublicAddressManager{
     }
 
     function addLog(string logTag, string logContent) public {
-        OLPublicAddressInterface olPublicAddressInterface = OLPublicAddressInterface(getOuLianPublicAddress());
-        OLLogToolInterface olLogToolInterface = OLLogToolInterface(olPublicAddressInterface.getServerAddress("OLLogTool"));
-        olLogToolInterface.addLog(logTag, logContent);
+//        OLPublicAddressInterface olPublicAddressInterface = OLPublicAddressInterface(getOuLianPublicAddress());
+//        OLLogToolInterface olLogToolInterface = OLLogToolInterface(olPublicAddressInterface.getServerAddress("OLLogTool"));
+//        olLogToolInterface.addLog(logTag, logContent);
     }
 }

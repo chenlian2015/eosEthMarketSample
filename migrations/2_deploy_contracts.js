@@ -8,30 +8,31 @@ var OLLogTool = artifacts.require('./OLLogTool.sol')
 var OLRandomContract = artifacts.require('./OLRandomContract.sol')
 var OracleChainToken = artifacts.require('./OracleChainToken.sol')
 
-
 var OLTestSynatax = artifacts.require('./OLTestSynatax.sol')
 var OLTestSynataxBB = artifacts.require('./OLTestSynataxBB.sol')
 module.exports = function (deployer) {
-    //1
-    //deployer.deploy(OLSuperManager);
-    //并配置地址到并配置地址到OLAddressSuperManager.sol源码中
-    ///
+  //1
+  //deployer.deploy(OLSuperManager);
+  //并配置地址到并配置地址到OLAddressSuperManager.sol源码中
+  ///
 
-    //2
-    deployer.deploy(OLPublicAddress);
-    //并配置地址到OLAddressPublicAddressManager.sol源码中
-    //
+  //2
+  //deployer.deploy(OLPublicAddress);
+  //并配置地址到OLAddressPublicAddressManager.sol源码中
+  //
 
-    /*3
-    deployer.deploy(OLMarket);
-    deployer.deploy(OLBlackWhiteList);
-    deployer.deploy(OLFeeManager);
-    deployer.deploy(OLLogTool);
-    deployer.deploy(OLRandomContract);
-    deployer.deploy(OracleChainToken);
-    */
+  //3
+  if (true) {
+    // deployer.deploy(OLMarket)
+    // deployer.deploy(OLBlackWhiteList)
+    // deployer.deploy(OLFeeManager)
+    // deployer.deploy(OLLogTool)
+    deployer.deploy(OLRandomContract)
+    deployer.deploy(OracleChainToken)
+  }
+  //
 
-    /*
-    deployer.deploy(OLTestSynatax);
-    deployer.deploy(OLTestSynataxBB);*/
-};
+  /*
+  deployer.deploy(OLTestSynatax);
+  deployer.deploy(OLTestSynataxBB);*/
+}
