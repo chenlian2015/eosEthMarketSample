@@ -24,7 +24,7 @@ module.exports = function (deployer) {
   //
 
   //3
-  if (true) {
+  if (false) {
     deployer.deploy(OLMarket)
     deployer.deploy(OLBlackWhiteList)
     deployer.deploy(OLFeeManager)
@@ -35,7 +35,7 @@ module.exports = function (deployer) {
   }
   //
 
-  if(true) {
+  if(false) {
     deployer.deploy(OLLotteryContract)
     deployer.deploy(OLTestSynatax);
     deployer.deploy(OLTestSynataxBB);

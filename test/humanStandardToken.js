@@ -3,7 +3,7 @@ const OLFeeManagerInterface = artifacts.require('./OLFeeManagerInterface.sol')
 const OLLogToolInterface = artifacts.require('./OLLogToolInterface.sol')
 const OLLotteryContract = artifacts.require('./OLLotteryContract.sol')
 const OLMarketServerInterface = artifacts.require('./OLMarketServerInterface.sol')
-const OLPublicAddressInterface = artifacts.require('./OLPublicAddress.sol')
+const OLPublicAddress = artifacts.require('./OLPublicAddress.sol')
 const OLRandomContractInterface = artifacts.require('./OLRandomContractInterface.sol')
 const OLSuperManager = artifacts.require('./OLSuperManager.sol')
 const StantardTokenInterface = artifacts.require('./StantardTokenInterface.sol')
@@ -16,29 +16,30 @@ contract('OLTestSynatax', function (accounts) {
 
     console.log('start')
     if (false) {
-        var olTestSynatax = OLTestSynatax.at('0x3cc018497a726215ca555093888ffb349c84442a');
-        olTestSynatax.test.call().then(function (result) {
+        var olTestSynatax = OLTestSynatax.at('0x541d574d80f1f7c7e219f35ecb2394748987c75c');
+        olTestSynatax.addLog.call("ss","wr").then(function (result) {
             console.log(result);
         });
         return;
     }
 
 
-    var addrOLSuperManager = '0xac461f5c3682b9bbe9255c1c61f3ba785ab54a25'
-    var addrOLPublicAddressInterface = '0x58b65baf8c5f474fa8395fecbb1f439c99d4c0b9'
 
-    var addrOracleChainToken = '0xf0afc140732e95c19ac6e5f7b76183a00f8985a3';
-    var addrOLLogToolInterface = '0x87dcbb9cf8933806b59ac496eebf99fa1b1e0561'
-    var addrOLMarketServerInterface = '0xc9084278bace8c4c973707b1b274b47b0b47f118'
+    var addrOLPublicAddressInterface = '0xde7156c2940a45723b17352e4b5f0e9e5d8e52de'
 
-    var addrOLBlackWhiteListInterface = '0x63ecf4a53ac72d12072dce7b17604ed0f00a6696'
-    var addrOLFeeManagerInterface = '0xbee5bcc887a5819d8d2f34f371b824392560d35d'
+    var addrOracleChainToken = '0x25fe09f3689b0c3fcc46e6df9196bc1baa0b3973';
+    var addrOLLogToolInterface = '0x333cc2b21b2172573d0a5547c2f23f8d940c2579'
+    var addrOLMarketServerInterface = '0x3f751a598f4c68d0a918d62688a1814d7ba355d0'
+
+    var addrOLBlackWhiteListInterface = '0x785f3dc8dac8567fe4bce8c001eebec667a1c0d1'
+    var addrOLFeeManagerInterface = '0x2ea6f5a9f239ef864844f9b9d119f3b6c56d48fd'
     var addrOLLotteryContract = '0x1980d47bb029dd205107f07f0ecb3ac42c82a678'
 
-    var addrOLRandomContractInterface = '0x5079dcabbddcb17ecab61c9fcfced0ff40c5434e'
+    var addrOLRandomContractInterface = '0xc490b57dc8b1089639ea1bc216af2f1bc65e7f14'
 
 
-    var OLPublicAddressAbstraction = OLPublicAddressInterface.at(addrOLPublicAddressInterface)
+    var olLogToolInterface = OLLogToolInterface.at(addrOLLogToolInterface)
+
     /*步骤1
     1.truffle compile
     2.truffle migrate
@@ -49,11 +50,13 @@ contract('OLTestSynatax', function (accounts) {
      将各个合约地址注册到OLPublicAddress中
     */
 
+   var OLPublicAddressAbstraction =  OLPublicAddress.at(addrOLPublicAddressInterface);
 
     if (true) {
 
-        OLPublicAddressAbstraction.getServerAddress("OLSuperManager");
-        //OLPublicAddressAbstraction.putServerAddress('OLSuperManager', addrOLSuperManager,1)
+      olLogToolInterface.addLog("OLSuperManager", "sss");
+      OLPublicAddressAbstraction.addLog("OLSuperManager", "sss");
+      OLPublicAddressAbstraction.getServerStatus('OLSuperManager')
         // OLPublicAddressAbstraction.putServerAddress('OLPublicAddress', addrOLPublicAddressInterface,1)
         //
         // OLPublicAddressAbstraction.putServerAddress('OLLogTool', addrOLLogToolInterface,1)

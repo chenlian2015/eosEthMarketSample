@@ -17,6 +17,7 @@ contract OLCommonConfigure {
 
     uint constant public errorCode_serverIsFreezed = 5;
 
+    uint constant public errorCode_serverNoExistent = 6;
 
     /*
     random contract

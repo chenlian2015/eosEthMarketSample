@@ -74,7 +74,6 @@ contract OLPublicAddress is OLCommonConfigure,OLAddressSuperManager,OLCommonCall
         if(addrTmp == address(0x0)){
             return;
         }
-
         OLLogToolInterface olLogToolInterface = OLLogToolInterface(addrTmp);
         olLogToolInterface.addLog(log, logContent);
     }
