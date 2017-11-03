@@ -17,4 +17,8 @@ contract OLFeeManagerInterface {
     @return get the fee needed to call this string serverName
     */
     function getFee(string serverName) returns (uint);
+
+    function setFeedBackFee(string serverName, uint fee) public returns (uint);
+
+    function getFeedBackFeeAward(string serverName) public returns (uint);
 }

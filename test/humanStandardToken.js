@@ -29,7 +29,7 @@ contract('OLTestSynatax', function (accounts) {
   var addrOLMarketServerInterface = '0x66919b31b17fd80ad876f918f0b8ec25865ad885'
 
   var addrOLBlackWhiteListInterface = '0x926c06af60ed06ebb00bf75e3759bd6db3eaa94c'
-  var addrOLFeeManagerInterface = '0x23d858febf26f859f15c5576de227895538bcddb'
+  var addrOLFeeManagerInterface = '0x821d59e3b3e63b053fca1b4b4eddb433cbe55a22'
   var addrOLLotteryContract = '0x7586e387a747c80dc92e0d10a6256d637cc01baf'
 
   var addrOLRandomContractInterface = '0x35cf82599ad7be5284500a94a1c3ce605fcceb4b'
@@ -71,6 +71,8 @@ contract('OLTestSynatax', function (accounts) {
   if (1) {
     var olFeeManager = OLFeeManagerInterface.at(addrOLFeeManagerInterface)
     olFeeManager.setFee('OLRandomContract', 18)//单位oct
+    olFeeManager.setFeedBackFee('OLRandomContract', 1)//单位oct
+
     olFeeManager.getFee.call('OLRandomContract').then(function (result) {
       console.log(result)
     })

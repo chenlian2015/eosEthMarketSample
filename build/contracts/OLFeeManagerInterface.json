@@ -7,6 +7,46 @@
         {
           "name": "serverName",
           "type": "string"
+        }
+      ],
+      "name": "getFeedBackFeeAward",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "serverName",
+          "type": "string"
+        },
+        {
+          "name": "fee",
+          "type": "uint256"
+        }
+      ],
+      "name": "setFeedBackFee",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "serverName",
+          "type": "string"
         },
         {
           "name": "fee",
@@ -45,5 +85,5 @@
   "unlinked_binary": "0x",
   "networks": {},
   "schema_version": "0.0.5",
-  "updated_at": 1509679130832
+  "updated_at": 1509679709750
 }
