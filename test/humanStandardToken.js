@@ -8,104 +8,118 @@ const OLRandomContractInterface = artifacts.require('./OLRandomContractInterface
 const OLSuperManager = artifacts.require('./OLSuperManager.sol')
 const StantardTokenInterface = artifacts.require('./StantardTokenInterface.sol')
 
-
 const OLTestSynatax = artifacts.require('./OLTestSynatax.sol')
 const ThirdPartyVoter = artifacts.require('./ThirdPartyVoter.sol')
 
 contract('OLTestSynatax', function (accounts) {
 
-    console.log('start')
-    if (false) {
-        var olTestSynatax = OLTestSynatax.at('0x541d574d80f1f7c7e219f35ecb2394748987c75c');
-        olTestSynatax.addLog.call("ss","wr").then(function (result) {
-            console.log(result);
-        });
-        return;
-    }
+  console.log('start')
+  if (0) {
+    var olTestSynatax = OLTestSynatax.at('0xbd1bf35bf582ad0aab73b2cc640117451cd93acc')
+    olTestSynatax.addLog.call('ss', 'wr').then(function (result) {
+      console.log(result)
+    })
+    return
+  }
 
+  var addrOLPublicAddressInterface = '0xc410c30537903e5931be17af4482dc84b5f75cb7'
 
+  var addrOracleChainToken = '0x510898c8c054474f97118a04e714b910ba17f72f'
+  var addrOLLogToolInterface = '0x47eb902d7667033cfac640011cfaa129f0abcd46'
+  var addrOLMarketServerInterface = '0x66919b31b17fd80ad876f918f0b8ec25865ad885'
 
-    var addrOLPublicAddressInterface = '0xde7156c2940a45723b17352e4b5f0e9e5d8e52de'
+  var addrOLBlackWhiteListInterface = '0x926c06af60ed06ebb00bf75e3759bd6db3eaa94c'
+  var addrOLFeeManagerInterface = '0x23d858febf26f859f15c5576de227895538bcddb'
+  var addrOLLotteryContract = '0x7586e387a747c80dc92e0d10a6256d637cc01baf'
 
-    var addrOracleChainToken = '0x25fe09f3689b0c3fcc46e6df9196bc1baa0b3973';
-    var addrOLLogToolInterface = '0x333cc2b21b2172573d0a5547c2f23f8d940c2579'
-    var addrOLMarketServerInterface = '0x3f751a598f4c68d0a918d62688a1814d7ba355d0'
+  var addrOLRandomContractInterface = '0x35cf82599ad7be5284500a94a1c3ce605fcceb4b'
 
-    var addrOLBlackWhiteListInterface = '0x785f3dc8dac8567fe4bce8c001eebec667a1c0d1'
-    var addrOLFeeManagerInterface = '0x2ea6f5a9f239ef864844f9b9d119f3b6c56d48fd'
-    var addrOLLotteryContract = '0x1980d47bb029dd205107f07f0ecb3ac42c82a678'
+  var olLogToolInterface = OLLogToolInterface.at(addrOLLogToolInterface)
 
-    var addrOLRandomContractInterface = '0xc490b57dc8b1089639ea1bc216af2f1bc65e7f14'
+  /*步骤1
+  1.truffle compile
+  2.truffle migrate
+  3.OLPublicAddress的以太坊地址写到各个合约需要公用地址的.sol文件中
+  步骤1---end */
 
+  /*步骤2--start---
+   将各个合约地址注册到OLPublicAddress中
+  */
+  var logTool = OLLogToolInterface.at(addrOLLogToolInterface)
+  if (1) {
+    logTool.clear()
+  }
 
-    var olLogToolInterface = OLLogToolInterface.at(addrOLLogToolInterface)
+  var OLPublicAddressAbstraction = OLPublicAddress.at(addrOLPublicAddressInterface)
+  if (0) {
 
-    /*步骤1
-    1.truffle compile
-    2.truffle migrate
-    3.OLPublicAddress的以太坊地址写到各个合约需要公用地址的.sol文件中
-    步骤1---end */
+    OLPublicAddressAbstraction.putServerAddress('OLSuperManager', addrOLMarketServerInterface, 1)
+    OLPublicAddressAbstraction.putServerAddress('OLPublicAddress', addrOLPublicAddressInterface, 1)
+    OLPublicAddressAbstraction.putServerAddress('OLLogTool', addrOLLogToolInterface, 1)
+    OLPublicAddressAbstraction.putServerAddress('OracleChainToken', addrOracleChainToken, 1)
+    OLPublicAddressAbstraction.putServerAddress('OLMarket', addrOLMarketServerInterface, 1)
+    OLPublicAddressAbstraction.putServerAddress('OLBlackWhiteList', addrOLBlackWhiteListInterface, 1)
+    OLPublicAddressAbstraction.putServerAddress('OLFeeManager', addrOLFeeManagerInterface, 1)
+    OLPublicAddressAbstraction.putServerAddress('OLLotteryContract', addrOLLotteryContract, 1)
+    OLPublicAddressAbstraction.putServerAddress('OLRandomContract', addrOLRandomContractInterface, 1)
 
-    /*步骤2--start---
-     将各个合约地址注册到OLPublicAddress中
-    */
+    OLPublicAddressAbstraction.getServerAddress.call('OLSuperManager').then(function (result) {
+      console.log(result)
+    })
+  }
 
-   var OLPublicAddressAbstraction =  OLPublicAddress.at(addrOLPublicAddressInterface);
+  if (1) {
+    var olFeeManager = OLFeeManagerInterface.at(addrOLFeeManagerInterface)
+    olFeeManager.setFee('OLRandomContract', 18)//单位oct
+    olFeeManager.getFee.call('OLRandomContract').then(function (result) {
+      console.log(result)
+    })
+  }
 
-    if (true) {
+  //充值步骤
+  if (false) {
 
-      olLogToolInterface.addLog("OLSuperManager", "sss");
-      OLPublicAddressAbstraction.addLog("OLSuperManager", "sss");
-      OLPublicAddressAbstraction.getServerStatus('OLSuperManager')
-        // OLPublicAddressAbstraction.putServerAddress('OLPublicAddress', addrOLPublicAddressInterface,1)
-        //
-        // OLPublicAddressAbstraction.putServerAddress('OLLogTool', addrOLLogToolInterface,1)
-        // OLPublicAddressAbstraction.putServerAddress('OracleChainToken', addrOracleChainToken,1)
-        // OLPublicAddressAbstraction.putServerAddress('OLMarket', addrOLMarketServerInterface,1)
-        // OLPublicAddressAbstraction.putServerAddress('OLBlackWhiteList', addrOLBlackWhiteListInterface,1)
-        // OLPublicAddressAbstraction.putServerAddress('OLFeeManager', addrOLFeeManagerInterface,1)
-        // OLPublicAddressAbstraction.putServerAddress('OLLotteryContract', addrOLLotteryContract,1)
-        // OLPublicAddressAbstraction.putServerAddress('OLRandomContract', addrOLRandomContractInterface,1)
-    }
+  }
 
-    //充值步骤
-    if (false) {
+  //乐透参与调用
+  if (false) {
 
-    }
+  }
 
-    //乐透参与调用
-    if (false) {
+  //随机数种子调用
+  if (false) {
+    var ThirdPartyVoterAbstraction = ThirdPartyVoter.at(addrThirdPartyVoter)
 
-    }
+    ThirdPartyVoterAbstraction.sendOnlyHash('123456')
+    ThirdPartyVoterAbstraction.sendOnlyHash('1234567')
+    ThirdPartyVoterAbstraction.sendOnlyHash('12345678')
 
-    //随机数种子调用
-    if (false) {
-        var ThirdPartyVoterAbstraction = ThirdPartyVoter.at(addrThirdPartyVoter)
+    ThirdPartyVoterAbstraction.sendSeedAndHash('123456')
+    ThirdPartyVoterAbstraction.sendSeedAndHash('1234567')
+    ThirdPartyVoterAbstraction.sendSeedAndHash('12345678')
+    /*步骤5---end---*/
+  }
 
-        ThirdPartyVoterAbstraction.sendOnlyHash('123456')
-        ThirdPartyVoterAbstraction.sendOnlyHash('1234567')
-        ThirdPartyVoterAbstraction.sendOnlyHash('12345678')
+  /*日志查看步骤
+  */
+  if (1) {
+    logTool.length.call().then(function (result) {
+      console.log('*****Log ')
+      console.log('*****Log ')
+      console.log('*****Log count:')
+      console.log(result)
 
-        ThirdPartyVoterAbstraction.sendSeedAndHash('123456')
-        ThirdPartyVoterAbstraction.sendSeedAndHash('1234567')
-        ThirdPartyVoterAbstraction.sendSeedAndHash('12345678')
-        /*步骤5---end---*/
-    }
+      for (i = 0; i < result; i++) {
 
-    /*日志查看步骤
-    */
-    if (true) {
-
-        var logTool = OLLogToolInterface.at(addrOLLogToolInterface)
-
-            logTool.length.call().then(function (result) {
-            console.log('OCLotteryContractAbstraction log count:')
-            console.log(result)
-            for (i = 0; i < result; i++) {
-              logTool.getAt.call(i).then(function (strResult) {
-                    console.log('OCLotteryContractAbstraction:' + strResult)
-                })
-            }
+        logTool.getTagAt.call(i).then(function (strResult) {
+          console.log('Tag:' + strResult)
         })
-    }
+
+        logTool.getContentAt.call(i).then(function (strResult) {
+          console.log('Content:' + strResult)
+        })
+
+      }
+    })
+  }
 })

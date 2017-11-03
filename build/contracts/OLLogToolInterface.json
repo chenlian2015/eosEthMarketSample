@@ -16,27 +16,27 @@
     },
     {
       "constant": false,
+      "inputs": [],
+      "name": "clear",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
       "inputs": [
         {
           "name": "nIndex",
           "type": "uint256"
         }
       ],
-      "name": "getAt",
+      "name": "getContentAt",
       "outputs": [
         {
           "name": "",
           "type": "string"
         }
       ],
-      "payable": false,
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [],
-      "name": "clear",
-      "outputs": [],
       "payable": false,
       "type": "function"
     },
@@ -56,10 +56,28 @@
       "outputs": [],
       "payable": false,
       "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "nIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "getTagAt",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "type": "function"
     }
   ],
   "unlinked_binary": "0x",
   "networks": {},
   "schema_version": "0.0.5",
-  "updated_at": 1509608355006
+  "updated_at": 1509679130832
 }

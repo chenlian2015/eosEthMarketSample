@@ -6,7 +6,7 @@ import "./OLCommonConfigure.sol";
 
 contract OLSuperManager is OLCommonConfigure {
 
-    address private superManager = 0x4dd9211a809db401c06186410752c24a5a4a8175;
+    address private superManager = 0x32eaf6199c4d524ef2938868cbeb8befab973d7e;
 
     mapping (string => mapping (address => bool)) private permissionUserToServer;
 

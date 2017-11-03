@@ -27,11 +27,16 @@ contract OLLogTool is OLLogToolInterface {
         return logTAG.length;
     }
 
-    function getAt(uint nIndex) public returns (string){
+    function getTagAt(uint nIndex) public returns (string){
         return logTAG[nIndex];
+    }
+
+    function getContentAt(uint nIndex) public returns (string){
+        return logsContent[nIndex];
     }
 
     function clear() public {
         delete logTAG;
+        delete logsContent;
     }
 }

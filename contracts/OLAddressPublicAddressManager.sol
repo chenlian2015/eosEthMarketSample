@@ -3,6 +3,6 @@ pragma solidity ^0.4.15;
 
 contract OLAddressPublicAddressManager {
     function getOuLianPublicAddress() public returns (address){
-        return address(0xbacca1af5bf21f007380d0bab41e9686ba65b533);
+        return address(0xc410c30537903e5931be17af4482dc84b5f75cb7);
     }
 }

@@ -7,7 +7,9 @@ contract OLLogToolInterface {
 
     function length()  returns (uint);
 
-    function getAt(uint nIndex) returns (string);
+    function getTagAt(uint nIndex) returns (string);
+
+    function getContentAt(uint nIndex) returns (string);
 
     function clear();
 }

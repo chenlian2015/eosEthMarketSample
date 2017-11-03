@@ -19,12 +19,12 @@ module.exports = function (deployer) {
   ///
 
   //2
-  deployer.deploy(OLPublicAddress);
+  //deployer.deploy(OLPublicAddress);
   //并配置地址到OLAddressPublicAddressManager.sol源码中
   //
 
   //3
-  if (false) {
+  if (1) {
     deployer.deploy(OLMarket)
     deployer.deploy(OLBlackWhiteList)
     deployer.deploy(OLFeeManager)
@@ -35,7 +35,7 @@ module.exports = function (deployer) {
   }
   //
 
-  if(false) {
+  if(1) {
     deployer.deploy(OLLotteryContract)
     deployer.deploy(OLTestSynatax);
     deployer.deploy(OLTestSynataxBB);
