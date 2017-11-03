@@ -68,7 +68,7 @@ contract('OLTestSynatax', function (accounts) {
     })
   }
 
-  if (1) {
+  if (0) {
     var olFeeManager = OLFeeManagerInterface.at(addrOLFeeManagerInterface)
     olFeeManager.setFee('OLRandomContract', 18)//单位oct
     olFeeManager.setFeedBackFee('OLRandomContract', 1)//单位oct
@@ -79,8 +79,20 @@ contract('OLTestSynatax', function (accounts) {
   }
 
   //充值步骤
-  if (false) {
+  if (1) {
+    var oStantardTokenInterface = StantardTokenInterface.at(addrOracleChainToken);
+    oStantardTokenInterface.chargeFee(0x2a956464d4a9628f8f4034a50259115f38fcc36e, 0x32eaf6199c4d524ef2938868cbeb8befab973d7e, 1001);
 
+    console.log("allowance:");
+    oStantardTokenInterface.allowance.call(0x2a956464d4a9628f8f4034a50259115f38fcc36e, 0x32eaf6199c4d524ef2938868cbeb8befab973d7e).then(function(result){
+      console.log(result);
+    })
+
+    oStantardTokenInterface.balanceOf.call(0x2a956464d4a9628f8f4034a50259115f38fcc36e).then(function(result){
+      console.log("balanceOf:");
+      console.log(result);
+    })
+    //function chargeFee(address _spender, address _marketChargeManager, uint _value);
   }
 
   //乐透参与调用
