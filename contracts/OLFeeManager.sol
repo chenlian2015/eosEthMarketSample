@@ -16,10 +16,16 @@ contract OLFeeManager is OLFeeManagerInterface,OLAddressSuperManager,OLCommonCal
 
     function setFee(string serverName, uint fee) public returns (uint){
         addLog(TAG, "1");
+
+        if(getSuperManagerContractAddress() == address(0x0)){
+            return errorCode_addressIsEmpty;
+        }
+
         OLSuperManager olSuperManager = OLSuperManager(getSuperManagerContractAddress());
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLFeeManager")) {
             return errorCode_noPermitAccess;
         }
+
         addLog(TAG, "2");
         feeSetting[serverName] = fee;
         return errorCode_success;

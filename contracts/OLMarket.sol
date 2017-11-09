@@ -21,17 +21,18 @@ contract OLMarket is OLMarketServerInterface, OLAddressSuperManager, OLCommonCal
     string private constant TAG = "OLMarket";
 
     function OCMarket(){
-        oclpa = OLPublicAddress(getOuLianPublicAddress());
+
     }
 
     function getFee(string servarName) public returns (uint){
+        oclpa = OLPublicAddress(getOuLianPublicAddress());
         OLFeeManagerInterface olServerInterface = OLFeeManagerInterface(oclpa.getServerAddress("OLFeeManager"));
         return olServerInterface.getFee(servarName);
     }
 
     function callServer(string servarName, uint versionCaller)returns (uint reason){
-
-        uint nCode = preCheckAndPay(servarName, versionCaller);
+        oclpa = OLPublicAddress(getOuLianPublicAddress());
+        uint nCode = preCheckAndPay(servarName, versionCaller, msg.sender);
         if (nCode != errorCode_success) {
             return nCode;
         }
@@ -43,7 +44,9 @@ contract OLMarket is OLMarketServerInterface, OLAddressSuperManager, OLCommonCal
         return errorCode_success;
     }
 
-    function preCheckAndPay(string servarName, uint versionCaller) public returns (uint errorCode){
+
+    function preCheckAndPay(string servarName, uint versionCaller, address user) public returns (uint errorCode){
+        oclpa = OLPublicAddress(getOuLianPublicAddress());
         addLog(TAG, "1");
         OLServerInterface olServerInterface = OLServerInterface(oclpa.getServerAddress(servarName));
         if (versionCaller != getCurrentVersion()) {
@@ -52,7 +55,7 @@ contract OLMarket is OLMarketServerInterface, OLAddressSuperManager, OLCommonCal
 
         addLog(TAG, "2");
         OLBlackWhiteListInterface olBlackWhiteListInterface = OLBlackWhiteListInterface(oclpa.getServerAddress("OLBlackWhiteList"));
-        if (!olBlackWhiteListInterface.isAddrCanCallServer(servarName, msg.sender)) {
+        if (!olBlackWhiteListInterface.isAddrCanCallServer(servarName, user)) {
             return errorCode_noPermitAccess;
         }
 
@@ -64,7 +67,7 @@ contract OLMarket is OLMarketServerInterface, OLAddressSuperManager, OLCommonCal
 
         OLSuperManager olSuperManager = OLSuperManager(getSuperManagerContractAddress());
         StantardTokenInterface stantardTokenInterface = StantardTokenInterface(oclpa.getServerAddress("OracleChainToken"));
-        uint nAllowance = stantardTokenInterface.allowance(msg.sender, olSuperManager.getSuperManager());
+        uint nAllowance = stantardTokenInterface.allowance(user, olSuperManager.getSuperManager());
 
 
         OLFeeManagerInterface olFeeManagerInterface = OLFeeManagerInterface(oclpa.getServerAddress("OLFeeManager"));
@@ -75,7 +78,7 @@ contract OLMarket is OLMarketServerInterface, OLAddressSuperManager, OLCommonCal
         addLog(TAG, "4");
 
 
-        stantardTokenInterface.transferFrom(msg.sender, olSuperManager.getSuperManager(), nFeeNeeded);
+        stantardTokenInterface.transferFrom(user, olSuperManager.getSuperManager(), nFeeNeeded);
         return errorCode_success;
     }
 }

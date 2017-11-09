@@ -19,6 +19,8 @@ contract OLCommonConfigure {
 
     uint constant public errorCode_serverNoExistent = 6;
 
+    uint constant public errorCode_addressIsEmpty = 7;
+
     /*
     random contract
     */
@@ -38,20 +40,33 @@ contract OLCommonConfigure {
     server status on OuLianMarket
     */
     uint constant serverStatusFreezed = 0;
+
     uint constant serverStatusNormal = 1;
+
     uint constant serverStatusRemoved = 2;
 
     /*
     addr weather or not work in white or black list
     */
     uint constant  notinuse = 2;
+
     uint constant  inuse = 1;
 
     /*
     contrant white or black list check way
     */
     uint notCheck = 0;
+
     uint onlyCheckWhiteList = 1;
+
     uint onlyCheckNotInBlackList = 2;
+
     uint checkWhiteAndBlackList = 3;
+
+    /*
+    fee
+    */
+    uint errorCode_cannotTransMoreThanYouHave = 301;
+    uint errorCode_cannotTransNegativeValue = 302;
+    uint errorCode_allowedValueIsNotEnough = 303;
 }

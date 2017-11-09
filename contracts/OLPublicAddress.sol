@@ -23,7 +23,7 @@ contract OLPublicAddress is OLCommonConfigure,OLAddressSuperManager,OLCommonCall
         addLog(TAG, "1");
         OLSuperManager olSuperManager = OLSuperManager(getSuperManagerContractAddress());
         if (!olSuperManager.isUserHasPermissonToModify(msg.sender, "OLPublicAddress")) {
-            return errorCode_success;
+            return errorCode_noPermitAccess;
         }
 
         addLog(TAG, "2");

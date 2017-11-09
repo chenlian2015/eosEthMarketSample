@@ -11,6 +11,7 @@ var OracleChainToken = artifacts.require('./OracleChainToken.sol')
 var OLTestSynatax = artifacts.require('./OLTestSynatax.sol')
 var OLTestSynataxBB = artifacts.require('./OLTestSynataxBB.sol')
 var OLLotteryContract = artifacts.require('./OLLotteryContract.sol')
+var ThirdPartyVoter = artifacts.require('./ThirdPartyVoter.sol')
 
 module.exports = function (deployer) {
   //1
@@ -24,7 +25,7 @@ module.exports = function (deployer) {
   //
 
   //3
-  deployer.deploy(OLFeeManager)
+  deployer.deploy(OLRandomContract)
   if (0) {
     deployer.deploy(OLMarket)
     deployer.deploy(OLBlackWhiteList)
@@ -35,10 +36,11 @@ module.exports = function (deployer) {
 
   }
   //
-
+  //deployer.deploy(ThirdPartyVoter);
   if(0) {
     deployer.deploy(OLLotteryContract)
     deployer.deploy(OLTestSynatax);
     deployer.deploy(OLTestSynataxBB);
+    deployer.deploy(ThirdPartyVoter);
   }
 }

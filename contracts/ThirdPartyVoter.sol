@@ -10,10 +10,25 @@ import "./OLAddressPublicAddressManager.sol";
 
 contract ThirdPartyVoter is OLCommonCall, OLCommonConfigure {
     string private constant TAG = "ThirdPartyVoter";
+
     OLPublicAddress oclpa;
 
     function ThirdPartyVoter(){
         oclpa = OLPublicAddress(getOuLianPublicAddress());
+    }
+
+    mapping (string => bytes32) hello;
+
+
+    bytes32 constant nNothingProvidedLable = bytes32(0);
+
+    function testEqual() public returns (bool){
+        if (hello["x"] == bytes32(0)) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     function sendOnlyHash(string seed){

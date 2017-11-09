@@ -23,14 +23,14 @@ contract StantardTokenInterface {
     /// @param _to The address of the recipient
     /// @param _value The amount of token to be transferred
     /// @return Whether the transfer was successful or not
-    function transfer(address _to, uint256 _value) returns (bool success);
+    function transfer(address _to, uint256 _value) returns (uint);
 
     /// @notice send `_value` token to `_to` from `_from` on the condition it is approved by `_from`
     /// @param _from The address of the sender
     /// @param _to The address of the recipient
     /// @param _value The amount of token to be transferred
     /// @return Whether the transfer was successful or not
-    function transferFrom(address _from, address _to, uint256 _value) returns (bool success);
+    function transferFrom(address _from, address _to, uint256 _value) returns (uint);
 
     /// @notice `msg.sender` approves `_spender` to spend `_value` tokens
     /// @param _spender The address of the account able to transfer the tokens
@@ -47,7 +47,7 @@ contract StantardTokenInterface {
     @param _spender 需要调用市场服务的合约地址
     @param _marketChargeManager 市场费用管理员地址
     */
-    function chargeFee(address _spender, address _marketChargeManager, uint _value);
+    function chargeFee(address _spender, address _marketChargeManager, uint _value) public returns(uint);
 
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
     event Approval(address indexed _owner, address indexed _spender, uint256 _value);

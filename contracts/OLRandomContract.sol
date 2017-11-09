@@ -46,11 +46,13 @@ contract OLRandomContract is OLCommonCall,OLCommonConfigure, OLRandomContractInt
         cacheRequests.push(oneRequest);
     }
 
+
     function requestOneUUID(address callBackAddress, uint versionCaller) public returns (uint code){
         addLog(TAG, "2");
         OLPublicAddressInterface oclpa = OLPublicAddressInterface(getOuLianPublicAddress());
+
         OLMarketServerInterface olMarketServerInterface = OLMarketServerInterface(oclpa.getServerAddress(marketName));
-        uint nCode = olMarketServerInterface.preCheckAndPay(currentContractName, versionCaller);
+        uint nCode = olMarketServerInterface.preCheckAndPay(currentContractName, versionCaller, msg.sender);
         if (nCode != errorCode_success) {
             return nCode;
         }
@@ -79,9 +81,9 @@ contract OLRandomContract is OLCommonCall,OLCommonConfigure, OLRandomContractInt
         }
 
         //一个人，针对一个请求，只能投一次票
-        if (cacheRequests[nCurrentIndex].senderSeedLable[msg.sender] != nNothingProvidedLable) {
+        if (cacheRequests[nCurrentIndex].senderSeedLable[msg.sender] == nHashProvidedLable) {
             addLog(TAG, "9");
-            return errorCode_hashSeedProvided;
+//            return errorCode_hashSeedProvided;
         }
 
         cacheRequests[nCurrentIndex].senderSeedLable[msg.sender] = nHashProvidedLable;
@@ -152,6 +154,8 @@ contract OLRandomContract is OLCommonCall,OLCommonConfigure, OLRandomContractInt
                 nCurrentIndex++;
             }
         }
+
+        return errorCode_success;
     }
 
 

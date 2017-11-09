@@ -55,8 +55,8 @@
       "name": "transferFrom",
       "outputs": [
         {
-          "name": "success",
-          "type": "bool"
+          "name": "",
+          "type": "uint256"
         }
       ],
       "payable": false,
@@ -79,7 +79,12 @@
         }
       ],
       "name": "chargeFee",
-      "outputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
       "payable": false,
       "type": "function"
     },
@@ -116,8 +121,8 @@
       "name": "transfer",
       "outputs": [
         {
-          "name": "success",
-          "type": "bool"
+          "name": "",
+          "type": "uint256"
         }
       ],
       "payable": false,
@@ -193,5 +198,5 @@
   "unlinked_binary": "0x",
   "networks": {},
   "schema_version": "0.0.5",
-  "updated_at": 1509679709751
+  "updated_at": 1510220351895
 }

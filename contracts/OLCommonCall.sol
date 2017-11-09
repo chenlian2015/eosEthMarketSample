@@ -8,12 +8,11 @@ import "./OLAddressPublicAddressManager.sol";
 contract OLCommonCall is OLAddressPublicAddressManager{
 
     string public constant marketName = "OLMarket";
-    address addrOuLianPublicAddress;
-    function setOuLianPublicAddress(address addr){
-        addrOuLianPublicAddress = addr;
-    }
 
-    function addLog(string logTag, string logContent) public {
+    function addLog(string logTag, string logContent) public{
+        if(getOuLianPublicAddress() == address(0x0)){
+            return;
+        }
         OLPublicAddressInterface olPublicAddressInterface = OLPublicAddressInterface(getOuLianPublicAddress());
         address addrTmp = olPublicAddressInterface.getServerAddress("OLLogTool");
         if(addrTmp == address(0x0)){
@@ -21,5 +20,9 @@ contract OLCommonCall is OLAddressPublicAddressManager{
         }
         OLLogToolInterface olLogToolInterface = OLLogToolInterface(addrTmp);
         olLogToolInterface.addLog(logTag, logContent);
+    }
+
+    function getMyAddress()public returns(address){
+        return address(this);
     }
 }
